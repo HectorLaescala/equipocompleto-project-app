@@ -1,0 +1,68 @@
+<div class="card-slide ion-no-padding" *ngIf="invitationPlayers; else loadingOrError">
+  <ng-container *ngIf="invitationPlayers.length; else empty">
+    <ion-slides #slides [options]="slideOpts" (ionSlideTouchEnd)="ionSlideTouchEnd()">
+      <ion-slide *ngFor="let invitationPlayer of invitationPlayers">
+        <ion-card mode="md">
+          <ion-card-content>
+            <ion-grid>
+              <ion-row class="ion-no-padding ion-justify-content-center">
+                <ion-col size="12">
+                  <ion-item lines="none" class="ion-no-padding">
+                    <ion-avatar>
+                      <ion-img [src]="invitationPlayer.ImagenUsuario"></ion-img>
+                    </ion-avatar>
+                  </ion-item>
+                  <p>{{invitationPlayer.NombreEquipo}}</p>
+                  <p>{{ invitationPlayer.NumeroMiembros }} {{
+                    invitationPlayer.NumeroMiembros > 1 ? " miembros" : " miembro"
+                    }}</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+  </ng-container>
+  <ng-template #empty>
+    <ion-col size="12" class="errorHandle">
+      <h6>Actualmente <strong>no tienes</strong> invitaciones de equipos</h6>
+    </ion-col>
+  </ng-template>
+</div>
+<ng-template #loadingOrError>
+  <div class="errorHandle" *ngIf="errorHandle | async; else loading">
+    <h6>Error al cargar la <strong>lista de invitaciones.</strong></h6>
+    <h6>Por favor,<strong> inténtelo de nuevo</strong> más tarde.</h6>
+  </div>
+  <ng-template #loading>
+    <div class="style-skeleton card-slide">
+      <ion-slides [options]="slideOpts">
+        <ion-slide *ngFor="let account of [1, 1, 1, 1, 1]" class="animated flash slow infinite">
+          <ion-card mode="md">
+            <ion-card-content>
+              <ion-grid>
+                <ion-row class="ion-no-padding ion-justify-content-center">
+                  <ion-col size="12">
+                    <ion-skeleton-text class="animated flash slow infinite"></ion-skeleton-text>
+                    <ion-item lines="none" class="ion-no-padding">
+                      <ion-avatar>
+                        <ion-skeleton-text class="animated flash slow infinite"></ion-skeleton-text>
+                      </ion-avatar>
+                    </ion-item>
+                    <p>
+                      <ion-skeleton-text class="animated flash slow infinite"></ion-skeleton-text>
+                    </p>
+                    <p>
+                      <ion-skeleton-text class="animated flash slow infinite"></ion-skeleton-text>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+    </div>
+  </ng-template>
+</ng-template>

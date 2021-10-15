@@ -1,0 +1,201 @@
+ion-card-title,
+ion-card-subtitle {
+  color: #333333;
+  font-family: Montserrat-Bold;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 13px;
+}
+
+ion-item {
+  --highlight-color-invalid: #f43c4b;
+  --highlight-height: 1px;
+}
+
+ion-title {
+  color: #ffffff;
+  font-family: Montserrat-SemiBold;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 22px;
+}
+
+ion-content {
+  --background: #f9f9f9;
+}
+
+ion-card-title {
+  margin-top: 10px;
+}
+
+ion-card {
+  border: 1px solid #ebebeb;
+  border-radius: 10px;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+ion-radio-group {
+  display: flex;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+ion-card-content {
+  justify-content: center;
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 17px;
+}
+
+ion-radio {
+  height: 28px;
+  width: 28px;
+}
+
+ion-input {
+  --background: #ffffff;
+  --color: #b9b8b9;
+  font-family: Montserrat-Regular;
+  height: 56px;
+}
+
+ion-select::part(icon) {
+  display: none !important;
+}
+
+
+ion-item>ion-label {
+  font-family: Montserrat-SemiBold;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin-top: 4px;
+}
+
+ion-item>ion-icon[name="caret-up-outline"] {
+  color: #333333;
+  font-size: 10px;
+}
+
+ion-textarea {
+  --background: #ffffff;
+  border: 1px solid #ebebeb;
+  --color: #333333;
+  border-radius: 5px;
+  height: 200px;
+  font-family: Montserrat-Regular;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 24px;
+  padding: 20px 20px 0px 20px;
+  margin-left: 1px;
+  margin-bottom: 3px;
+}
+
+ion-button {
+  --border-color: #c90949;
+  --border-radius: 41.5px;
+  color: #fff;
+  font-size: 14px;
+  height: 56px;
+  --background: #c90949;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 18px;
+  font-family: Montserrat-SemiBold;
+}
+
+p {
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 13px;
+  font-family: Montserrat-Bold;
+  margin-left: 5px;
+}
+
+small {
+  color: #707070;
+  font-weight: 100;
+  font-family: Montserrat-Regular;
+}
+
+.style-line-count-character {
+  color: #c90949;
+  font-weight: 100;
+  font-size: 13px;
+}
+
+.style-line-count-character-letter {
+  color: #333333;
+  font-weight: 100;
+  font-size: 13px;
+}
+
+span {
+  color: #707070;
+  font-family: Montserrat-Regular;
+  font-size: 10px;
+  letter-spacing: 0;
+  line-height: 13px;
+  margin-left: 8px;
+}
+
+.style-line-item-select {
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  --padding-top: 5px;
+  --padding-start: 18px;
+  --padding-end: 8px;
+  margin-top: 25px;
+  margin-bottom: 3px;
+
+  .ionic-selectable:not(.ionic-selectable-has-label) {
+    color: #707070;
+    font-family: Montserrat-Regular;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 22px;
+  }
+
+  ::ng-deep .ionic-selectable-icon {
+    display: none;
+  }
+
+  ::ng-deep .ionic-selectable-icon-inner {
+    display: none;
+    color: #333333;
+    opacity: 1;
+  }
+}
+
+.style-small-textarea {
+  font-size: 8px;
+  color: #707070;
+  margin-left: 5px;
+  margin-top: 5px;
+  font-family: Montserrat-Regular;
+}
+
+.style-space-card {
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+
+ion-text {
+  color: #d0021b;
+  font-family: Montserrat-Regular;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 13px;
+}
+
+.hide {
+  display: none;
+}

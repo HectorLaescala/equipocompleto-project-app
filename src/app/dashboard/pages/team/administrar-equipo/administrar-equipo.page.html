@@ -1,0 +1,374 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button icon="chevron-back-outline" mode="md" [defaultHref]="routerLink"></ion-back-button>
+    </ion-buttons>
+    <ion-title mode="ios">Administrar equipos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true">
+  <div id="header">
+    <ion-card color="light">
+      <ion-avatar *ngIf="TempImage">
+        <ion-img ionImgViewer scheme="dark" *ngFor="let i of TempImage" [src]="i"></ion-img>
+      </ion-avatar>
+      <ion-button color="light" class="ion-button-first" (click)="getAddLibraryProfile()">
+        <ion-icon slot="icon-only" name="folder-open-outline"> </ion-icon>
+      </ion-button>
+      <ion-button color="light" class="ion-button-last" (click)="getAddPhotoProfile()">
+        <ion-icon slot="icon-only" name="camera"> </ion-icon>
+      </ion-button>
+    </ion-card>
+    <p>{{nameTeam}}</p>
+    <span>{{cantMembers}} {{ cantMembers> 1 ? " Miembros" : " Miembro" }}</span>
+  </div>
+
+  <div class="style-segment">
+    <ion-segment [(ngModel)]="type" mode="md" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="members">
+        <ion-label class="ion-text-start">MIEMBROS</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="data">
+        <ion-label class="ion-text-start">DATOS</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="statistics">
+        <ion-label class="ion-text-start">ESTADÍSTICAS</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="type">
+    <ion-grid fixed>
+      <ion-row *ngSwitchCase="'members'">
+        <ion-col size="12">
+          <ion-list class="ion-no-padding">
+            <ion-item lines="none" class="style-invite-player">
+              <p slot="start">Invitar jugadores</p>
+              <ion-button slot="end" expand="block" fill="outline"
+                routerLink="/dashboard/team/invite-players/{{idTeam}}" routerDirection="root">
+                <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size="12">
+          <app-list-members-team [listMembers]="listMembers"></app-list-members-team>
+        </ion-col>
+        <ion-col size="12">
+          <ion-list class="ion-no-padding style-row-align-list" mode="md">
+            <ion-list-header class="style-list-header-postulant">
+              NUEVOS POSTULANTES</ion-list-header>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-poe.png"></ion-img>
+              </ion-avatar>
+              <ion-label>
+                <span>POSTULANTE</span>
+                <p>Oscar Salazar</p>
+              </ion-label>
+              <ion-button slot="end" expand="block" fill="outline">
+                <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+              </ion-button>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-leia.png"></ion-img>
+              </ion-avatar>
+              <ion-label>
+                <span>POSTULANTE</span>
+                <p>Manuel Dominguez</p>
+              </ion-label>
+              <ion-button slot="end" expand="block" fill="outline">
+                <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+              </ion-button>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-leia.png"></ion-img>
+              </ion-avatar>
+              <ion-label>
+                <span>POSTULANTES</span>
+                <p>Renato Contreras</p>
+              </ion-label>
+              <ion-button slot="end" expand="block" fill="outline">
+                <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size="12">
+          <ion-button class="style-outline-button" (click)="onGetOutTeam()" fill="outline" expand="block" mode="md">ABANDONAR EQUIPO
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngSwitchCase="'data'">
+        <form class="ion-padding-start ion-padding-end ion-padding-bottom" (ngSubmit)="getUpdateTeamProfile()"
+          autocomplete="off" [formGroup]="formTeamsUserProfile">
+          <ion-col size="12">
+            <div class="style-col-text-description ion-margin-top">
+              <p class="ion-text-center">
+                {{ (selectedToggle)? 'Recibe solicitudes de ingreso al equipo':
+                'No recibe solicitudes de ingreso al equipo'}}
+              </p>
+            </div>
+            <div class="ion-text-center ion-margin-top">
+              <ion-toggle slot="end" color="success" [(ngModel)]="selectedToggle" (ionChange)="onChangeToggle()"
+                formControlName="notification" mode="ios"></ion-toggle>
+            </div>
+          </ion-col>
+          <ion-col size="12">
+            <div class="style-col-text-description ion-margin-top">
+              <ion-label>DATOS DEL EQUIPO </ion-label>
+              <p class="ion-text-center">
+                Esta información es visible cuando consultan el perfil de tu
+                equipo.
+              </p>
+            </div>
+          </ion-col>
+          <ion-col size="12">
+            <ion-list class="style-col-item-select">
+              <ion-item lines="inset">
+                <ion-label class="style-label-input">Nombre</ion-label>
+                <ion-input maxlength="50" type="text" formControlName="nombre">
+                </ion-input>
+              </ion-item>
+              <div
+                [ngClass]="formTeamsUserProfile.controls.nombre.errors?'custom-text-message-error':'custom-text-hide-message-error'"
+                class="custom-text-message-error" *ngFor="let error of errorMessages.nombre">
+                <ng-container
+                  *ngIf="formTeamsUserProfile.controls.nombre.hasError(error.type) && (formTeamsUserProfile.controls.nombre.dirty || formTeamsUserProfile.controls.nombre.touched)">
+                  <ion-text color="light">{{error.message}}</ion-text>
+                </ng-container>
+              </div>
+              <ion-item lines="inset">
+                <ion-label>Tipo de equipo</ion-label>
+                <ion-select [selectedText]="typeTeamName" formControlName="tipo"
+                  (ionChange)="changeGender($event,'tipo')" interface="popover">
+                  <ion-select-option *ngFor="let tt of typeTeam" [value]="tt">{{tt.Descripcion}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item lines="inset">
+                <ion-label>Edad promedio</ion-label>
+                <ion-select [selectedText]="ageAverageName" formControlName="edad"
+                  (ionChange)="changeGender($event,'edad')" interface="popover">
+                  <ion-select-option *ngFor="let ag of AgeAverage" [value]="ag">{{ag.EdadPromedio}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item lines="inset">
+                <ion-label>Género del equipo</ion-label>
+                <ion-select [selectedText]="genderName" (ionChange)="changeGender($event,'genero')"
+                  formControlName="genero" interface="popover">
+                  <ion-select-option *ngFor="let gender of genders" [value]="gender">
+                    {{gender.Descripcion}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+          <ion-col size="12">
+            <div class="style-col-text-description">
+              <ion-label> Descripción </ion-label>
+              <span> (OPCIONAL)</span>
+            </div>
+          </ion-col>
+          <ion-col size="12">
+            <ion-textarea rows="3" formControlName="descripcion"
+              placeholder="También puedes ingresar información que motive a otros usuarios a unirse a tu equipo Ej: Mujeres futbolistas de Maipú"
+              value="" maxlength="50">
+            </ion-textarea>
+            <strong class="style-line-count-character ion-float-right">{{ 50 -
+              formTeamsUserProfile.controls.descripcion.value.length
+              }}<small class="style-line-count-character-letter">
+                caracteres restastes</small>
+            </strong>
+          </ion-col>
+          <ion-col size="12">
+            <ion-button class="style-user-button" expand="block" type="submit"
+              [disabled]="(!formTeamsUserProfile.valid) || (formTeamsUserProfile.pristine)">GUARDAR CAMBIOS
+            </ion-button>
+          </ion-col>
+
+          <ion-col size="12" class="style-col-item-select">
+            <form [formGroup]="formTeamAddDeport" autocomplete="off" (ngSubmit)="getAddTeamDeport()">
+              <ion-list>
+                <p>DEPORTES FAVORITOS DEL EQUIPO</p>
+                <ion-item mode="md">
+                  <ion-label>Deporte</ion-label>
+                  <ionic-selectable formControlName="deport" [items]="deports" itemValueField="IdDeporte"
+                    headerColor="danger" [searchFailText]="'No se encontro la búsqueda'"
+                    searchPlaceholder="Ingresar su Búsqueda" [shouldFocusSearchbar]="true" itemTextField="NombreDeporte"
+                    [canSearch]="true" closeButtonText="Regresar">
+                    >
+                    <ng-template ionicSelectableItemIconTemplate let-port="item" let-isPortSelected="isItemSelected">
+                      <ion-icon slot="end" [name]="isPortSelected ? 'checkmark-circle' : 'radio-button-off'"
+                        [color]="isPortSelected ? 'danger' : null">
+                      </ion-icon>
+                    </ng-template>
+                    <ng-template ionicSelectableTitleTemplate> </ng-template>
+                  </ionic-selectable>
+                </ion-item>
+              </ion-list>
+              <ion-button class="style-user-button-deport" [disabled]="!formTeamAddDeport.valid" type="submit"
+                expand="full" shape="round" mode="md">AGREGAR
+              </ion-button>
+            </form>
+          </ion-col>
+
+          <ion-col size="12">
+            <app-list-deports-favorites [deportsFavorite]="deportsFavorite"
+              (removeDeportsFavorite)="getRemoveTeamDeport($event.IdDeporte,$event.NombreDeporte)">
+            </app-list-deports-favorites>
+            <ion-infinite-scroll class="ion-margin-top ion-padding-top" threshold="150px"
+              (ionInfinite)="getDeportsFavoriteTeam($event)">
+              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando...">
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+          </ion-col>
+        </form>
+      </ion-row>
+      <ion-row *ngSwitchCase="'statistics'">
+        <ion-col size="6" class="style-col-border-select">
+          <ion-item lines="none">
+            <ion-label>CATEGORIAS</ion-label>
+            <ion-select>
+              <ion-select-option>15</ion-select-option>
+              <ion-select-option>16</ion-select-option>
+            </ion-select>
+            <ion-icon name="caret-up-outline" slot="end"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col size="6" class="style-col-border-select">
+          <ion-item lines="none">
+            <ion-label>SUB-CATEGORIAS</ion-label>
+            <ion-select>
+              <ion-select-option>15</ion-select-option>
+              <ion-select-option>16</ion-select-option>
+            </ion-select>
+            <ion-icon name="caret-up-outline" slot="end"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" class="style-col-border-item">
+          <ion-item lines="none">
+            <ion-label>JUGADOS</ion-label>
+            <ion-badge slot="end">22</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>GANADOS</ion-label>
+            <ion-badge slot="end">6</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>EMPATADOS</ion-label>
+            <ion-badge slot="end">3</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>PERDIDOS</ion-label>
+            <ion-badge slot="end">2</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>NO REGISTRADOS</ion-label>
+            <ion-badge slot="end">0</ion-badge>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12">
+          <ion-list class="ion-no-padding style-ranking-list" mode="md">
+            <ion-list-header>
+              <ion-label class="ion-text-start style-text-title">Ranking de Participación</ion-label>
+              <ion-label class="ion-text-end style-text-subtitle">Partidos</ion-label>
+            </ion-list-header>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-badge color="light" slot="start">3</ion-badge>
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-ben.png"></ion-img>
+              </ion-avatar>
+              <ion-badge slot="end" class="style-text-bagde">11</ion-badge>
+              <ion-label>
+                <span>MIEMBRO</span>
+                <p>Gabriel Suárez</p>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-badge color="light" slot="start">4</ion-badge>
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-finn.png"></ion-img>
+              </ion-avatar>
+              <ion-badge slot="end" class="style-text-bagde">10</ion-badge>
+              <ion-label>
+                <span>MIEMBRO</span>
+                <p>Víctor Arce</p>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-badge color="light" slot="start">5</ion-badge>
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-han.png"></ion-img>
+              </ion-avatar>
+              <ion-badge slot="end" class="style-text-bagde">9</ion-badge>
+              <ion-label>
+                <span>MIEMBRO</span>
+                <p>Raúl ladrón de guevara</p>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-badge color="light" slot="start">6</ion-badge>
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-leia.png"></ion-img>
+              </ion-avatar>
+              <ion-badge slot="end" class="style-text-bagde">8</ion-badge>
+              <ion-label>
+                <span>MIEMBRO</span>
+                <p>Oscar Salazar</p>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-badge color="light" slot="start">7</ion-badge>
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-luke.png"></ion-img>
+              </ion-avatar>
+              <ion-badge slot="end" class="style-text-bagde">7</ion-badge>
+              <ion-label>
+                <span>MIEMBRO</span>
+                <p>Manuel Dominguez</p>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-badge color="light" slot="start">8</ion-badge>
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-poe.png"></ion-img>
+              </ion-avatar>
+              <ion-badge slot="end" class="style-text-bagde">6</ion-badge>
+              <ion-label>
+                <span>MIEMBRO</span>
+                <p>Renato Contreras</p>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-badge color="light" slot="start">9</ion-badge>
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-rey.png"></ion-img>
+              </ion-avatar>
+              <ion-badge slot="end" class="style-text-bagde">5</ion-badge>
+              <ion-label>
+                <span>MIEMBRO</span>
+                <p>Alonso San Martín</p>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-padding">
+              <ion-badge color="light" slot="start">10</ion-badge>
+              <ion-avatar slot="start">
+                <ion-img src="../../assets/list/avatar-yoda.png"></ion-img>
+              </ion-avatar>
+              <ion-badge slot="end" class="style-text-bagde">4</ion-badge>
+              <ion-label>
+                <span>MIEMBRO</span>
+                <p>Raul Mendoza</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

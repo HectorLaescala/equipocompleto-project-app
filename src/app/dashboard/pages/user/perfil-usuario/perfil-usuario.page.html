@@ -1,0 +1,274 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button icon="chevron-back-outline" mode="md" defaultHref="/dashboard/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title mode="ios">MI PERFIL</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true">
+  <ion-grid class="style-grid-item">
+    <ion-row>
+      <ion-col size="12" class="ion-margin-start ion-margin-top style-col-item">
+        <ion-item lines="none">
+          <ion-avatar slot="start" *ngIf="TempImage">
+            <ion-img ionImgViewer scheme="dark" *ngFor="let i of TempImage" [src]="i"></ion-img>
+          </ion-avatar>
+          <ion-label>
+            <h3>{{username}}</h3>
+            <p>JUGADOR</p>
+          </ion-label>
+          <ion-icon name="camera" slot="start" (click)="getAddPhotoProfile()"></ion-icon>
+          <ion-icon name="folder-open-outline" slot="start" (click)="getAddLibraryProfile()"></ion-icon>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="ion-padding style-col-item-list">
+        <ion-item class="ion-no-padding">
+          <ion-label class="ion-text-start">Recibir notificaciones Push</ion-label>
+          <ion-toggle slot="end" color="success" mode="ios"></ion-toggle>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="style-grid-segment">
+    <ion-segment [(ngModel)]="type" mode="md" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="my-data">
+        <ion-label class="ion-text-start">MIS DATOS</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="deports">
+        <ion-label class="ion-text-start">DEPORTES</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="statistics">
+        <ion-label class="ion-text-start">ESTADÍSTICAS</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="type" class="style-borde-switch">
+    <ion-grid>
+      <ion-row *ngSwitchCase="'my-data'">
+        <ion-col size="12" class="style-col-item-list-data">
+          <form [formGroup]="formUserProfile" autocomplete="off" (ngSubmit)="getEditDataUser()">
+            <!--<ion-label> Usuario</ion-label>-->
+            <ion-item mode="md">
+              <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+              <ion-input type="text" formControlName="nameuser" placeholder="Ingrese nombre de usuario"></ion-input>
+            </ion-item>
+            <div [ngClass]="formUserProfile.controls.nameuser.errors?'ion-text-left':'custom-text-hide-message-error'"
+              class="ion-text-left" *ngFor="let error of errorMessages.nameuser">
+              <ng-container
+                *ngIf="formUserProfile.controls.nameuser.hasError(error.type) && (formUserProfile.controls.nameuser.dirty || formUserProfile.controls.nameuser.touched)">
+                <ion-text color="light">{{error.message}}</ion-text>
+              </ng-container>
+            </div>
+            <ion-item mode="md">
+              <ion-icon name="mail" slot="start"></ion-icon>
+              <ion-input type="email" formControlName="email" placeholder="Ingrese correo electrónico"></ion-input>
+            </ion-item>
+            <div [ngClass]="formUserProfile.controls.email.errors?'ion-text-left':'hide'" class="ion-text-left"
+              *ngFor="let error of errorMessages.email">
+              <ng-container
+                *ngIf="formUserProfile.controls.email.hasError(error.type) && (formUserProfile.controls.email.dirty || formUserProfile.controls.email.touched)">
+                <ion-text color="light">{{error.message}}</ion-text>
+              </ng-container>
+            </div>
+            <ion-text *ngIf="formUserProfile.controls['email'].errors?.useremail" color="light">El email ya ha sido
+              tomado</ion-text>
+            <ion-item mode="md">
+              <ion-icon name="male-female" slot="start"></ion-icon>
+              <ion-select formControlName="genero" interface="popover" (ionChange)="changeGender($event)"
+                [selectedText]="genderName">
+                <ion-select-option *ngFor="let gender of genders" [value]="gender">{{gender.Descripcion}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item mode="md">
+              <ion-datetime doneText="Aceptar" cancelText="Cancelar"
+                monthNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
+                formControlName="fecha" displayFormat="D MMMM, YYYY" pickerFormat="MMMM D, YYYY"></ion-datetime>
+              <ion-icon name="calendar-outline" slot="start"></ion-icon>
+            </ion-item>
+            <ion-item mode="md">
+              <ion-icon name="location-sharp" slot="start"></ion-icon>
+              <ion-select value="0" interface="popover">
+                <ion-select-option value="0">Chile</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item mode="md">
+              <ion-icon name="location-sharp" slot="start"></ion-icon>
+              <ionic-selectable [items]="regions" itemValueField="IdRegion" formControlName="region"
+                headerColor="danger" [searchFailText]="'No se encontro la búsqueda'"
+                searchPlaceholder="Ingresar su Búsqueda" [shouldFocusSearchbar]="true" itemTextField="Descripcion"
+                [canSearch]="true" closeButtonText="Regresar">
+                >
+                <ng-template ionicSelectableIconTemplate>
+                  <ion-icon name=""></ion-icon>
+                </ng-template>
+                <ng-template ionicSelectableItemIconTemplate let-port="item" let-isPortSelected="isItemSelected">
+                  <ion-icon slot="end" [name]="isPortSelected ? 'checkmark-circle' : 'radio-button-off'"
+                    [color]="isPortSelected ? 'danger' : null">
+                  </ion-icon>
+                </ng-template>
+              </ionic-selectable>
+            </ion-item>
+            <ion-item mode="md">
+              <ion-icon name="phone-portrait-outline" slot="start"></ion-icon>
+              <ion-input type="tel" formControlName="telefono" maxlength="13" placeholder="Ingrese N° Teléfonico">
+              </ion-input>
+            </ion-item>
+            <div [ngClass]="formUserProfile.controls.telefono.errors?'ion-text-left':'hide'" class="ion-text-left"
+              *ngFor="let error of errorMessages.telefono">
+              <ng-container
+                *ngIf="formUserProfile.controls.telefono.hasError(error.type) && (formUserProfile.controls.telefono.dirty || formUserProfile.controls.telefono.touched)">
+                <ion-text color="light">{{error.message}}</ion-text>
+              </ng-container>
+            </div>
+            <ion-item mode="md">
+              <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+              <ion-input type="password" formControlName="password" placeholder="Contraseña"></ion-input>
+            </ion-item>
+            <div [ngClass]="formUserProfile.controls.password.errors?'ion-text-left':'hide'" class="ion-text-left"
+              *ngFor="let error of errorMessages.password">
+              <ng-container
+                *ngIf="formUserProfile.controls.password.hasError(error.type) && (formUserProfile.controls.password.dirty || formUserProfile.controls.password.touched)">
+                <ion-text color="light">{{error.message}}</ion-text>
+              </ng-container>
+            </div>
+            <ion-item mode="md">
+              <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+              <ion-input type="password" formControlName="repassword" placeholder="Confirmar Contraseña"></ion-input>
+            </ion-item>
+            <div [ngClass]="formUserProfile.controls.repassword.errors?'ion-text-left':'hide'" class="ion-text-left"
+              *ngFor="let error of errorMessages.repassword">
+              <ng-container
+                *ngIf="formUserProfile.controls.repassword.hasError(error.type) && (formUserProfile.controls.repassword.dirty || formUserProfile.controls.repassword.touched)">
+                <ion-text color="light">{{error.message}}</ion-text>
+              </ng-container>
+            </div>
+            <div *ngSwitchCase="'my-data'" class="
+                style-vertical-center
+                ion-margin-top
+                ion-padding-top
+                ion-margin-bottom
+                ion-padding-bottom
+              ">
+              <ion-button class="style-user-button" [disabled]="(formUserProfile.invalid) || (formUserProfile.pristine)"
+                expand="block" type="submit">GUARDAR CAMBIOS
+              </ion-button>
+            </div>
+          </form>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngSwitchCase="'deports'">
+        <ion-col size="12" class="ion-margin-top ion-text-center style-title-deports">
+          <h6>Actualiza tus <strong>deportes favoritos</strong> y</h6>
+          <h6><strong>Ayudanos a mejorar</strong> tu experiencia.</h6>
+        </ion-col>
+
+        <ion-col size="12" class="style-col-list-data-deport style-col-item-select">
+          <form [formGroup]="formUserAddDeport" autocomplete="off" (ngSubmit)="getAddUserDeport()">
+            <ion-list class="ion-padding ion-margin-top">
+              <p>AGREGAR DEPORTE</p>
+
+              <ion-item mode="md">
+                <ion-label>Deporte</ion-label>
+                <ionic-selectable formControlName="deport" [items]="deports" itemValueField="IdDeporte"
+                  headerColor="danger" [searchFailText]="'No se encontro la búsqueda'"
+                  searchPlaceholder="Ingresar su Búsqueda" [shouldFocusSearchbar]="true" itemTextField="NombreDeporte"
+                  [canSearch]="true" closeButtonText="Regresar">
+                  >
+                  <ng-template ionicSelectableItemIconTemplate let-port="item" let-isPortSelected="isItemSelected">
+                    <ion-icon slot="end" [name]="isPortSelected ? 'checkmark-circle' : 'radio-button-off'"
+                      [color]="isPortSelected ? 'danger' : null">
+                    </ion-icon>
+                  </ng-template>
+                  <ng-template ionicSelectableTitleTemplate> </ng-template>
+                </ionic-selectable>
+              </ion-item>
+            </ion-list>
+
+            <div *ngSwitchCase="'deports'" class="ion-margin-bottom">
+              <ion-button class="style-user-button-deport" [disabled]="!formUserAddDeport.valid" type="submit"
+                expand="full" shape="round" mode="md">AGREGAR
+              </ion-button>
+            </div>
+          </form>
+        </ion-col>
+
+        <ion-col size="12" class="ion-margin-start ion-margin-top style-col-list-data-deport">
+          <p>DEPORTES AGREGADOS</p>
+        </ion-col>
+        <ion-col size="12" class="style-col-list-item-deport ion-margin-bottom">
+          <ion-item lines="none" mode="md" *ngFor="let df of deportsFavorite">
+            <ion-avatar slot="start" class="style-col-item-avatar-first">
+            </ion-avatar>
+            <ion-label> {{ df.NombreDeporte}} </ion-label>
+            <ion-icon slot="end" name="close-outline" (click)="getRemoveUserDeport(df.IdDeporte,df.NombreDeporte)">
+            </ion-icon>
+          </ion-item>
+          <ion-infinite-scroll class="ion-margin-top ion-padding-top" threshold="150px"
+            (ionInfinite)="loadData($event)">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngSwitchCase="'statistics'">
+        <ion-col size="6" class="style-col-border-select">
+          <ion-item lines="none" mode="md">
+            <ion-label>CATEGORIAS</ion-label>
+            <ion-select>
+              <ion-select-option>15</ion-select-option>
+              <ion-select-option>16</ion-select-option>
+            </ion-select>
+            <ion-icon name="caret-up-outline" slot="end"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col size="6" class="style-col-border-select">
+          <ion-item lines="none" mode="md">
+            <ion-label>SUB-CATEGORIAS</ion-label>
+            <ion-select>
+              <ion-select-option>15</ion-select-option>
+              <ion-select-option>16</ion-select-option>
+            </ion-select>
+            <ion-icon name="caret-up-outline" slot="end"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" class="ion-text-center">
+          <div class="style-col-div-content">
+            <p>El 75% de usuarios volvería a solicitar el</p>
+            <p>servicio.</p>
+          </div>
+        </ion-col>
+        <ion-col size="12" class="style-col-border-item">
+          <ion-item lines="none">
+            <ion-label>JUGADOS</ion-label>
+            <ion-badge slot="end">22</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>RESULTADOS REGISTRADOS</ion-label>
+            <ion-badge slot="end">6</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>GANADOS</ion-label>
+            <ion-badge slot="end">3</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>EMPATADOS</ion-label>
+            <ion-badge slot="end">2</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>PERDIDOS</ion-label>
+            <ion-badge slot="end">0</ion-badge>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" class="ion-no-padding style-col-text-item">
+          <p>Considera partidos personales y jugados por tus equipos</p>
+          <span> HISTORIAL DE PARTIDOS JUGADOS </span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

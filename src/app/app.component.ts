@@ -1,10 +1,25 @@
 import { Component } from '@angular/core';
 
+import { Platform } from '@ionic/angular';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  constructor() {}
+  constructor(
+    private platform: Platform,
+    private statusBar: StatusBar
+  ) {
+    this.initializeApp();
+  }
+
+  initializeApp() {
+    this.platform.ready().then(() => {
+      this.platform.backButton.subscribeWithPriority(1, () => { });
+      this.statusBar.styleBlackOpaque();
+    });
+  }
 }

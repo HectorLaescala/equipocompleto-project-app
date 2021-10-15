@@ -1,0 +1,76 @@
+<div class="card-slide ion-no-padding" *ngIf="teamUsers; else loadingOrError">
+  <ng-container *ngIf="teamUsers.length; else empty">
+    <ion-slides [options]="slideOpts">
+      <ion-slide *ngFor="let teamUser of teamUsers" (click)="getModalManageTeam(teamUser.IdEquipo, teamUser.CantidadMiembros, '/dashboard/profile', teamUser.Nombre)">
+        <ion-card mode="md">
+          <ion-card-content>
+            <ion-grid>
+              <ion-row class="ion-no-padding ion-justify-content-center">
+                <ion-col size="12" class="swiper-pagination-text-teams">
+                  <span>
+                    {{ (teamUser.TipoUsuario == 'ADMINISTRADOR PRINCIPAL' || teamUser.TipoUsuario == 'ADMINISTRADOR')?
+                    "Eres
+                    administrador":
+                    ""
+                    }}</span>
+                  <ion-item lines="none" class="ion-no-padding">
+                    <ion-avatar>
+                      <ion-img [src]="teamUser.ImagenEquipo"></ion-img>
+                    </ion-avatar>
+                  </ion-item>
+                  <p>{{ teamUser.Nombre}}</p>
+                  <p>
+                    {{ teamUser.CantidadMiembros }} {{
+                    teamUser.CantidadMiembros > 1 ? " miembros" : " miembro"
+                    }}
+                  </p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+  </ng-container>
+  <ng-template #empty>
+    <ion-col size="12" class="errorHandle" >
+      <h6>Actualmente <strong>no perteneces</strong> a ningún equipo</h6>
+    </ion-col>
+  </ng-template>
+</div>
+<ng-template #loadingOrError>
+  <div class="errorHandle" *ngIf="errorHandle | async; else loading">
+    <h6>Error al cargar la <strong>lista de equipos.</strong></h6>
+    <h6>Por favor,<strong> inténtelo de nuevo</strong> más tarde.</h6>
+  </div>
+  <ng-template #loading>
+    <div class="style-skeleton card-slide">
+      <ion-slides [options]="slideOptsMiddle">
+        <ion-slide *ngFor="let account of [1, 1, 1, 1, 1]" class="animated flash slow infinite">
+          <ion-card mode="md">
+            <ion-card-content>
+              <ion-grid>
+                <ion-row class="ion-no-padding ion-justify-content-center">
+                  <ion-col size="12">
+                    <ion-skeleton-text class="animated flash slow infinite"></ion-skeleton-text>
+                    <ion-item lines="none" class="ion-no-padding">
+                      <ion-avatar>
+                        <ion-skeleton-text class="animated flash slow infinite"></ion-skeleton-text>
+                      </ion-avatar>
+                    </ion-item>
+                    <p>
+                      <ion-skeleton-text class="animated flash slow infinite"></ion-skeleton-text>
+                    </p>
+                    <p>
+                      <ion-skeleton-text class="animated flash slow infinite"></ion-skeleton-text>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+    </div>
+  </ng-template>
+</ng-template>

@@ -1,0 +1,56 @@
+ion-menu.appMainmenu {
+    --ion-background-color: #333333;
+    --ion-text-color: var(--ion-color-primary-contrast);
+    --width: 340px;
+    // --height: 585px;
+  
+    ion-toolbar {
+      --background: #333333;
+    }
+  
+    ion-item {
+      --border-color: #707070;
+    }
+  
+    ion-label{
+      font-weight: 600;
+      font-size: 14px;
+      font-family: Montserrat-Regular;
+      letter-spacing: 0;
+      line-height: 18px;
+    }
+  }
+  
+  ion-icon[name="chevron-forward-outline"] {
+    color: #707070;
+    font-size: 18px;
+  }
+  
+  ion-icon[name="exit-outline"] {
+    color: #707070;
+    font-size: 24px;
+    vertical-align: middle;
+    padding-bottom: 4px;
+    padding-left: 5px;
+  }
+  
+  .style-menu-height {
+    height: 135px;
+    display: flex;
+    align-items: center !important;
+    justify-content: center;
+    padding-top: 25px;
+  }
+  
+  .style-vertical-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0px 20px 0px;
+  }
+  
+  .style-exit-menu {
+    color: #707070;
+    font-family: Montserrat-Regular;
+  }
+  

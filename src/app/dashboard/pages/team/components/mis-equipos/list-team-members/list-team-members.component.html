@@ -1,0 +1,57 @@
+<div class="style-item" *ngIf="teamUsers; else loadingOrError">
+  <ion-col size="12">
+    <small>EQUIPOS DONDE ERES MIEMBRO</small>
+    <ion-badge>{{ teamUsers.length }}</ion-badge>
+  </ion-col>
+  <ng-container *ngIf="teamUsers.length; else empty">
+    <ion-item (click)="getModalManageTeam(teamUser.IdEquipo, teamUser.CantidadMiembros)" lines="none"
+      class="ion-no-padding" mode="md" *ngFor="let teamUser of teamUsers">
+      <ion-avatar slot="start">
+        <ion-img [src]="teamUser.ImagenEquipo"></ion-img>
+      </ion-avatar>
+      <ion-label>
+        <p>{{ teamUser.Nombre }}</p>
+        <h3>
+          {{ teamUser.CantidadMiembros }}
+          {{ teamUser.CantidadMiembros > 1 ? " MIEMBROS" : " MIEMBRO" }}
+        </h3>
+      </ion-label>
+    </ion-item>
+  </ng-container>
+  <ng-template #empty>
+    <ion-col size="12">
+      <ion-button expand="block" routerLink="/dashboard/team/search-team" routerDirection="root" type="submit">
+        Busca equipos para unirte</ion-button>
+    </ion-col>
+  </ng-template>
+</div>
+<ng-template #loadingOrError>
+  <div class="style-errorHandle" *ngIf="errorHandle | async; else loading">
+    <small>EQUIPOS DONDE ERES MIEMBRO</small>
+    <ion-badge>0</ion-badge>
+    <h6>Error al cargar la <strong>lista de equipos.</strong></h6>
+    <h6>Por favor,<strong> inténtelo de nuevo</strong> más tarde.</h6>
+  </div>
+  <ng-template #loading>
+    <div class="style-skeleton">
+      <ion-list-header>
+        <ion-skeleton-text class="animated flash slow infinite ion-margin-end" style="width: 70%"></ion-skeleton-text>
+        <ion-skeleton-text class="animated flash slow infinite" style="width: 10%"></ion-skeleton-text>
+      </ion-list-header>
+      <ion-item lines="none" mode="md" class="ion-no-padding" *ngFor="let account of [1, 1, 1, 1, 1]"
+        class="animated flash slow infinite">
+        <ion-avatar slot="start">
+          <ion-skeleton-text class="animated flash slow infinite"></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <p>
+            <ion-skeleton-text width="20%"></ion-skeleton-text>
+          </p>
+          <h3>
+            <ion-skeleton-text width="20%"></ion-skeleton-text>
+          </h3>
+        </ion-label>
+      </ion-item>
+    </div>
+  </ng-template>
+</ng-template>

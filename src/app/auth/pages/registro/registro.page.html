@@ -1,0 +1,183 @@
+<app-back-button defaultHref="/login"></app-back-button>
+<ion-content>
+  <ion-grid class="ion-padding-start ion-padding-end ion-padding-bottom">
+    <ion-row>
+      <ion-col size="12">
+        <div class="style-vertical-center">
+          <img src="../../../assets/img/Big-Isotipo.png" />
+        </div>
+      </ion-col>
+      <ion-col size="12" class="ion-text-center">
+        <p>CREAR MI CUENTA</p>
+      </ion-col>
+      <ion-col size="12" mode="md">
+        <form
+          (ngSubmit)="getRegister()"
+          autocomplete="off"
+          [formGroup]="formRegistro"
+        >
+          <ion-item>
+            <ion-icon name="person" slot="start"></ion-icon>
+            <ion-input
+              type="text"
+              formControlName="nombre"
+              placeholder="Nombre de usuario"
+            >
+            </ion-input>
+          </ion-item>
+          <div
+            [ngClass]="formRegistro.controls.nombre.errors?'ion-text-left':'hide'"
+            class="ion-text-left"
+            *ngFor="let error of errorMessages.nombre"
+          >
+            <ng-container
+              *ngIf="formRegistro.controls.nombre.hasError(error.type) && (formRegistro.controls.nombre.dirty || formRegistro.controls.nombre.touched)"
+            >
+              <ion-text color="light">{{error.message}}</ion-text>
+              
+            </ng-container>
+          </div>
+          <ion-text
+                *ngIf="formRegistro.controls['nombre'].errors?.username"
+                color="light"
+                >Nombre ingresado ya esta registrado</ion-text
+              >
+          <ion-item>
+            <ion-icon name="mail" slot="start"></ion-icon>
+            <ion-input
+              type="email"
+              formControlName="email"
+              placeholder="Email"
+            ></ion-input>
+          </ion-item>
+          <div
+            [ngClass]="formRegistro.controls.email.errors?'ion-text-left':'hide'"
+            class="ion-text-left"
+            *ngFor="let error of errorMessages.email"
+          >
+            <ng-container
+              *ngIf="formRegistro.controls.email.hasError(error.type) && (formRegistro.controls.email.dirty || formRegistro.controls.email.touched)"
+            >
+              <ion-text color="light">{{error.message}}</ion-text>
+            </ng-container>
+          </div>
+          <ion-text
+          *ngIf="formRegistro.controls['email'].errors?.useremail"
+          color="light"
+          >Mail ingresado ya esta registrado</ion-text
+        >
+          <ion-item>
+            <ion-icon name="male-female" slot="start" mode="ios"></ion-icon>
+            <ion-label>Género</ion-label>
+            <ion-select formControlName="genero" interface="popover">
+              <ion-select-option
+                *ngFor="let gender of genders"
+                value="{{gender.IdGenero}}"
+                >{{gender.Descripcion}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+          <div
+            [ngClass]="formRegistro.controls.genero.errors?'ion-text-left':'hide'"
+            class="ion-text-left"
+            *ngFor="let error of errorMessages.genero"
+          >
+            <ng-container
+              *ngIf="formRegistro.controls.genero.hasError(error.type) && (formRegistro.controls.genero.dirty || formRegistro.controls.genero.touched)"
+            >
+              <ion-text color="light">{{error.message}}</ion-text>
+            </ng-container>
+          </div>
+          <ion-item>
+            <ion-icon name="location-sharp" slot="start" mode="ios"></ion-icon>
+            <ion-label>Región</ion-label>
+            <ion-select formControlName="region" interface="popover">
+              <ion-select-option
+                *ngFor="let region of regions"
+                value="{{region.IdRegion}}"
+                >{{region.Descripcion}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+          <div
+          [ngClass]="formRegistro.controls.region.errors?'ion-text-left':'hide'"
+          class="ion-text-left"
+          *ngFor="let error of errorMessages.region"
+        >
+          <ng-container
+            *ngIf="formRegistro.controls.region.hasError(error.type) && (formRegistro.controls.region.dirty || formRegistro.controls.region.touched)"
+          >
+            <ion-text color="light">{{error.message}}</ion-text>
+          </ng-container>
+        </div>
+          <ion-item>
+            <ion-icon name="phone-portrait-outline" slot="start"></ion-icon>
+            <ion-input
+              class
+              type="tel"
+              class="codigoLargo"
+              maxlength="8"
+              value="+56"
+              placeholder="+56"
+              disabled
+            ></ion-input>
+
+            <ion-input
+              type="tel"
+              maxlength="10"
+              formControlName="telefono"
+              placeholder="Teléfono"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="lock-closed" slot="start"></ion-icon>
+            <ion-input
+              type="password"
+              placeholder="Contraseña"
+              formControlName="contrasena"
+            ></ion-input>
+          </ion-item>
+          <div
+          [ngClass]="formRegistro.controls.contrasena.errors?'ion-text-left':'hide'"
+          class="ion-text-left"
+          *ngFor="let error of errorMessages.contrasena"
+        >
+          <ng-container
+            *ngIf="formRegistro.controls.contrasena.hasError(error.type) && (formRegistro.controls.contrasena.dirty || formRegistro.controls.contrasena.touched)"
+          >
+            <ion-text color="light">{{error.message}}</ion-text>
+          </ng-container>
+        </div>
+          <ion-item>
+            <ion-icon name="lock-closed" slot="start"></ion-icon>
+            <ion-input
+              type="password"
+              formControlName="recontrasena"
+              placeholder="Confirmar contraseña"
+            ></ion-input>
+          </ion-item>
+          <div
+          [ngClass]="formRegistro.controls.recontrasena.errors?'ion-text-left':'hide'"
+          class="ion-text-left"
+          *ngFor="let error of errorMessages.recontrasena"
+        >
+          <ng-container
+            *ngIf="formRegistro.controls.recontrasena.hasError(error.type) && (formRegistro.controls.recontrasena.dirty || formRegistro.controls.recontrasena.touched)"
+          >
+            <ion-text color="light">{{error.message}}</ion-text>
+          </ng-container>
+        </div>
+          <ion-button class="style-user-button" type="submit"  [disabled]="!formRegistro.valid" expand="block"
+            >Crear Cuenta
+          </ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border" *ngIf="isKeyboardHide">
+  <ion-toolbar>
+    <img src="../../../assets/img/Groups.png" />
+  </ion-toolbar>
+</ion-footer>

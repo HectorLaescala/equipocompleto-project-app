@@ -1,0 +1,46 @@
+<ion-list class="ion-no-padding style-row-align-list" mode="md">
+  <ion-list-header> LISTA DE MIEMBROS</ion-list-header>
+  <div *ngIf="listMembers.length; else skeleton">
+    <ion-item
+      lines="none"
+      class="ion-no-padding"
+      *ngFor="let lb of listMembers"
+    >
+      <ion-avatar slot="start">
+        <ion-img [src]="lb.ImagenUsuario"></ion-img>
+      </ion-avatar>
+      <ion-label>
+        <span>{{ lb.StatusInvitacion }}</span>
+        <p>{{ lb.NombreUsuario | titlecase }}</p>
+      </ion-label>
+      <ion-button slot="end" expand="block" fill="outline">
+        <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </div>
+</ion-list>
+<ng-template #skeleton>
+  <div class="style-skeleton">
+    <ion-item
+      lines="none"
+      mode="md"
+      class="ion-no-padding"
+      *ngFor="let account of [1, 1, 1, 1, 1]"
+      class="animated flash slow infinite"
+    >
+      <ion-avatar slot="start">
+        <ion-skeleton-text
+          class="animated flash slow infinite"
+        ></ion-skeleton-text>
+      </ion-avatar>
+      <ion-label>
+        <p>
+          <ion-skeleton-text width="20%"></ion-skeleton-text>
+        </p>
+        <h3>
+          <ion-skeleton-text width="20%"></ion-skeleton-text>
+        </h3>
+      </ion-label>
+    </ion-item>
+  </div>
+</ng-template>

@@ -1,0 +1,56 @@
+<ion-menu
+  class="appMainmenu"
+  side="start"
+  menuId="first"
+  contentId="MenuPrincipal"
+>
+  <ion-content>
+    <ion-menu-toggle>
+      <div class="style-vertical-center">
+        <img
+          src="../../../assets/img/logonegro.png"
+          routerLink="/principal/Perfil"
+        />
+      </div>
+      <ion-list lines="full" mode="md">
+        <ion-item lines="full" routerLink="/principal/CrearPartido" >
+          <ion-label class="ion-padding-start">CREAR PARTIDO </ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon
+        ></ion-item>
+        <ion-item routerLink="/angeda-partido">
+          <ion-label class="ion-padding-start">MIS PARTIDOS </ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon
+        ></ion-item>
+        <ion-item routerLink='/dashboard/team/user-team' routerDirection='root' >
+          <ion-label class="ion-padding-start">MIS EQUIPOS </ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item routerLink="/principal">
+          <ion-label class="ion-padding-start">MIS LOGROS </ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon
+        ></ion-item>
+        <ion-item routerLink="buscador">
+          <ion-label class="ion-padding-start">BUSCAR VACANTES </ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item routerLink="/equipo/buscador-equipos">
+          <ion-label class="ion-padding-start">BUSCAR EQUIPOS </ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item routerLink="/perfil-arbitro"
+          ><ion-label class="ion-padding-start"
+            >CREAR PERFIL ARBITRO
+          </ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+      </ion-list>
+      <div class="style-menu-height">
+        <ion-item lines="none" (click)="closeSesion()">
+          <ion-label class="ion-text-end style-exit-menu ion-padding-end">
+            CERRAR SESIÓN <ion-icon name="exit-outline"></ion-icon>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-menu-toggle>
+  </ion-content>
+</ion-menu>

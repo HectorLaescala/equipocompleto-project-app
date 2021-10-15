@@ -1,0 +1,14 @@
+<ion-list>
+  <ion-list-header class="list-header">
+    Deportes agregados
+  </ion-list-header>
+  <ion-col size="12" class="list-item ion-margin-bottom">
+    <ion-item lines="none" mode="md" *ngFor="let df of deportsFavorite">
+      <ion-avatar slot="start" class="style-col-item-avatar-first">
+      </ion-avatar>
+      <ion-label> {{ df.NombreDeporte}} </ion-label>
+      <ion-icon *ngIf="deportsFavorite?.length > 1" slot="end" name="close-outline" (click)="getRemoveTeamDeport(df.IdDeporte,df.NombreDeporte)">>
+      </ion-icon>
+    </ion-item>
+  </ion-col>
+</ion-list>

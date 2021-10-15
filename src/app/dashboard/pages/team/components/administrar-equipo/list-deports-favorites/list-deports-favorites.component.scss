@@ -1,0 +1,54 @@
+.list-header {
+  color: #333333;
+  font-family: Montserrat-SemiBold;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  padding-left: 0px;
+}
+
+.list-item {
+  margin-bottom: 60px;
+
+  ion-avatar {
+    height: 40px;
+    width: 40px;
+  }
+
+  ion-item:nth-child(1) {
+    margin-top: 0px;
+  }
+
+  ion-item {
+    border-radius: 5px;
+    margin: 15px 0px 0px 0px;
+    box-shadow: 0 6px 30px 5px rgba(51, 51, 51, 0.05),
+      0 8px 10px -5px rgba(51, 51, 51, 0.1);
+  }
+
+  ion-label {
+    color: #707070;
+    font-family: Montserrat-Regular;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 22px;
+  }
+
+  ion-icon[name="close-outline"] {
+    color: #b9b8b9;
+    font-size: 19px;
+  }
+
+  .style-col-item-avatar-first {
+    border-radius: 7px;
+    background-color: #d8f7cf;
+
+    ion-icon[name="basketball-outline"] {
+      font-size: 29px;
+      margin-left: 6px;
+      margin-top: 5px;
+      color: #62e041;
+    }
+  }
+
+}

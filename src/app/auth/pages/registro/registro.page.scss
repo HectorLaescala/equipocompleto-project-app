@@ -1,0 +1,80 @@
+p {
+  color: #333333;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 22px;
+  font-family: Montserrat-SemiBold;
+}
+
+img {
+  max-width: none !important;
+}
+
+ion-icon {
+  color: #333333;
+}
+
+ion-icon[name="pencil-sharp"] {
+  color: #b9b8b9;
+}
+
+ion-label {
+  --color: #707070 !important;
+}
+
+ion-input {
+  --placeholder-color: #707070;
+  --placeholder-opacity: 1;
+  font-family: Montserrat-Regular;
+}
+
+ion-item {
+  --highlight-color-invalid: #f43c4b;
+  --highlight-height: 1px;
+}
+
+ion-select {
+  color: #707070;
+  --placeholder-color: #707070;
+  --placeholder-opacity: 1;
+  font-family: Montserrat-Regular;
+}
+
+ion-toolbar {
+  --background: transparent;
+  --ion-color-base: transparent !important;
+}
+
+ion-text {
+  color: #d0021b;
+  font-family: Montserrat-Regular;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 13px;
+}
+.hide {
+  display: none;
+}
+
+.style-user-button {
+  --border-color: #c90949;
+  --border-radius: 41.5px;
+  color: #fff;
+  font-size: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 56px;
+  --background: #c90949;
+  width: 100%;
+  letter-spacing: 0;
+  line-height: 18px;
+  font-family: Montserrat-SemiBold;
+  margin-top: 40px;
+}
+
+.style-vertical-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

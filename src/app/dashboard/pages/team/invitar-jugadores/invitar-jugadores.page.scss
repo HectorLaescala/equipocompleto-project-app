@@ -1,0 +1,123 @@
+ion-title {
+  color: #ffffff;
+  font-family: Montserrat-SemiBold;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 22px;
+}
+
+ion-searchbar {
+  --icon-color: #333333;
+  --box-shadow: 0 9px 46px 8px rgba(51, 51, 51, 0.05),
+    0 11px 15px -7px rgba(51, 51, 51, 0.1);
+  --placeholder-color: #b9b8b9;
+  font-family: Montserrat-SemiBold;
+  font-weight: normal;
+  font-size: 14px;
+  padding-bottom: 0px;
+  --border-radius: 0.625rem;
+
+  ::ng-deep {
+    .searchbar-input-container {
+      .searchbar-input {
+        padding: 15px 5px 15px 45px;
+        caret-color: #c90949;
+      }
+    }
+
+    .searchbar-clear-icon {
+      margin-top: 2px;
+    }
+
+    .searchbar-search-icon.sc-ion-searchbar-md {
+      top: 20px;
+    }
+  }
+}
+
+ion-item {
+  --padding-end: 0px;
+  --inner-padding-end: 0px;
+  --background: transparent;
+  margin-top: 25px;
+
+  ion-avatar {
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    --border-radius: 5px;
+  }
+
+  ion-label {
+    margin-top: 7px;
+  }
+
+  ion-img {
+    border-radius: 5px;
+  }
+
+  p {
+    color: #707070;
+    font-family: Montserrat-Regular;
+    font-size: 10px;
+    letter-spacing: 0;
+    line-height: 13px;
+  }
+
+  h3 {
+    color: #333333;
+    font-family: Montserrat-SemiBold;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 17px;
+  }
+
+  .style-col-button,
+  .style-col-button-outline {
+    height: 33px;
+    width: 72px;
+    --border-radius: 41.5px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 13px;
+    --padding-top: 2px;
+    font-family: Montserrat-SemiBold;
+    --box-shadow: none;
+  }
+
+  .style-col-button {
+    --border-color: none;
+    --border-width: 0px;
+    --color: #ffffff;
+    --background: #c90949;
+  }
+
+  .style-col-button-outline {
+    --border-color: #ebebeb;
+    --border-width: 1px;
+    --color: #707070;
+    --background: #ffffff;
+  }
+}
+
+.style-errorHandle {
+  h6,
+  strong {
+    text-align: center;
+    font-family: Montserrat-Regular;
+  }
+
+  h6 {
+    font-size: 0.9rem;
+    margin-top: 0rem;
+    margin-bottom: 0.3rem;
+  }
+
+  strong {
+    color: #c90949;
+    font-weight: 100;
+  }
+}

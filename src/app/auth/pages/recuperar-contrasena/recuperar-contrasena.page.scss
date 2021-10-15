@@ -1,0 +1,82 @@
+h3 {
+  color: #333333;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.17px;
+  line-height: 18px;
+}
+
+.hide {
+  display: none;
+}
+
+
+p,
+ion-icon[name="information-circle-outline"] {
+  margin-left: 22px;
+  margin-right: 22px;
+}
+
+p {
+  color: #707070;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 22px;
+  font-family: Montserrat-Regular;
+}
+
+img {
+  max-width: none !important;
+}
+
+ion-icon[name="mail"] {
+  color: #333333;
+}
+
+ion-icon[name="information-circle-outline"] {
+  color: #50e3c2;
+  font-size: 28px;
+}
+
+ion-input {
+  font-family: Montserrat-Regular;
+}
+
+.style-user-button {
+  --border-color: #c90949;
+  --border-radius: 41.5px;
+  color: #fff;
+  font-size: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 56px;
+  --background: #c90949;
+  width: 85%;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 18px;
+  font-family: Montserrat-SemiBold;
+}
+
+.style-vertical-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ion-text {
+  color: #d0021b;
+  font-family: Montserrat-Regular;
+  font-size: 10px;
+  letter-spacing: 0;
+  line-height: 13px;
+}
+
+ion-item {
+  --highlight-color-invalid: #f43c4b;
+  --highlight-height: 1px;
+}
+
+/*.noactualbustyle-user-button:disabled,
+.style-user-button[disabled] {
+  opacity: 1;
+}*/

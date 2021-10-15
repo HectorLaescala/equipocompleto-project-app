@@ -1,5 +1,7 @@
 {
   "name": "AppEquipoCompleto",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

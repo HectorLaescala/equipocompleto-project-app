@@ -1,0 +1,263 @@
+<ion-content>
+  <ion-grid class="style-grid-search">
+    <ion-row>
+      <ion-col size="10">
+        <ion-searchbar type="search" mode="md" placeholder=""></ion-searchbar>
+      </ion-col>
+      <ion-col size="2" class="ion-no-padding">
+        <ion-button fill="clear" (click)="presentModalFilter()">
+          <ion-icon slot="icon-only" name="options-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="style-grid-principal">
+    <ion-segment mode="md" [(ngModel)]="type" (ionChange)="segmentChanged($event)" scrollable>
+      <ion-segment-button value="information">
+        <ion-label class="ion-text-start">EQUIPOS</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="announcement">
+        <ion-label class="ion-text-start">VACANTES</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="type">
+    <ion-grid class="style-grid">
+      <ion-row *ngSwitchCase="'information'">
+        <ion-col size="12" class="ion-margin-top">
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-avatar slot="start">
+              <ion-img src="../../assets/list/avatar-ben.png"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h3>Tio Marco F.C</h3>
+              <p>11 MIEMBROS</p>
+            </ion-label>
+            <ion-button slot="end" expand="block" fill="outline" (click)="presentModalSimple()">
+              VER
+            </ion-button>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-avatar slot="start">
+              <ion-img src="../../assets/list/avatar-leia.png"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h3>Atlético Pilsen</h3>
+              <p>15 MIEMBROS</p>
+            </ion-label>
+            <ion-button slot="end" expand="block" fill="outline" (click)="presentModalSimple()">
+              VER
+            </ion-button>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-avatar slot="start">
+              <ion-img src="../../assets/list/avatar-yoda.png"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h3>Los panzas F.C</h3>
+              <p>30 MIEMBROS</p>
+            </ion-label>
+            <ion-button slot="end" expand="block" fill="outline" (click)="presentModalSimple()">
+              VER
+            </ion-button>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-avatar slot="start">
+              <ion-img src="../../assets/list/avatar-finn.png"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h3>Demonios F.C</h3>
+              <p>28 MIEMBROS</p>
+            </ion-label>
+            <ion-button slot="end" expand="block" fill="outline" (click)="presentModalSimple()">
+              VER
+            </ion-button>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-avatar slot="start">
+              <ion-img src="../../assets/list/avatar-han.png"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h3>Real Academia</h3>
+              <p>45 MIEMBROS</p>
+            </ion-label>
+            <ion-button slot="end" expand="block" fill="outline" (click)="presentModalSimple()">
+              VER
+            </ion-button>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-avatar slot="start">
+              <ion-img src="../../assets/list/avatar-luke.png"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h3>Mirmidones F.C</h3>
+              <p>18 MIEMBROS</p>
+            </ion-label>
+            <ion-button slot="end" expand="block" fill="outline" (click)="presentModalSimple()">
+              VER
+            </ion-button>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngSwitchCase="'announcement'">
+        <ion-col size="12" class="ion-margin-top ion-margin-bottom ion-padding-bottom">
+          <ion-card mode="md">
+            <ion-card-header>
+              <ion-card-title>CAMPEONATO FUTSAL EMPRESAS</ion-card-title>
+              <ion-card-subtitle>Entre 25 a 30 años</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-grid>
+                <ion-row class="style-card-row-vacant">
+                  <ion-col size="5">
+                    <p class="ion-text-start text-first">VACANTES</p>
+                  </ion-col>
+                  <ion-col size="7">
+                    <p class="ion-text-end text-last">3 jugadores</p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="style-card-row-sport">
+                  <ion-col size="4">
+                    <p class="ion-text-start text-first">DEPORTE</p>
+                  </ion-col>
+                  <ion-col size="8">
+                    <p class="ion-text-end text-last">Fútbol sala</p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="style-card-row-enclosure">
+                  <ion-col size="3">
+                    <p class="ion-text-start text-first">RECINTO</p>
+                  </ion-col>
+                  <ion-col size="9">
+                    <p class="ion-text-end text-last">
+                      San miguel, Polideportivo CORDEP
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="style-card-row-date">
+                  <ion-col size="8">
+                    <p class="ion-text-start text-date">
+                      FECHA
+                      <span class="ion-text-start text-last">
+                        MARTES, 08 DE SEPT</span>
+                    </p>
+                  </ion-col>
+                  <ion-col size="4">
+                    <p class="ion-text-end text-date">
+                      HORA
+                      <span class="ion-text-start text-last"> 1:00 A.M</span>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+          <ion-card mode="md">
+            <ion-card-header>
+              <ion-card-title>CAMPEONATO FUTSAL EMPRESAS</ion-card-title>
+              <ion-card-subtitle>Entre 25 a 30 años</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-grid>
+                <ion-row class="style-card-row-vacant">
+                  <ion-col size="5">
+                    <p class="ion-text-start text-first">VACANTES</p>
+                  </ion-col>
+                  <ion-col size="7">
+                    <p class="ion-text-end text-last">1 arbitro + asistente</p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="style-card-row-sport">
+                  <ion-col size="4">
+                    <p class="ion-text-start text-first">DEPORTE</p>
+                  </ion-col>
+                  <ion-col size="8">
+                    <p class="ion-text-end text-last">Fútbol sala</p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="style-card-row-enclosure">
+                  <ion-col size="3">
+                    <p class="ion-text-start text-first">RECINTO</p>
+                  </ion-col>
+                  <ion-col size="9">
+                    <p class="ion-text-end text-last">
+                      San miguel, Polideportivo CORDEP
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="style-card-row-date">
+                  <ion-col size="8">
+                    <p class="ion-text-start text-date">
+                      FECHA
+                      <span class="ion-text-start text-last">
+                        MARTES, 08 DE SEPT</span>
+                    </p>
+                  </ion-col>
+                  <ion-col size="4">
+                    <p class="ion-text-end text-date">
+                      HORA
+                      <span class="ion-text-start text-last"> 1:00 A.M</span>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+          <ion-card mode="md">
+            <ion-card-header>
+              <ion-card-title>CAMPEONATO FUTSAL EMPRESAS</ion-card-title>
+              <ion-card-subtitle>Entre 25 a 30 años</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-grid>
+                <ion-row class="style-card-row-vacant">
+                  <ion-col size="5">
+                    <p class="ion-text-start text-first">VACANTES</p>
+                  </ion-col>
+                  <ion-col size="7">
+                    <p class="ion-text-end text-last">1 equipo rival</p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="style-card-row-sport">
+                  <ion-col size="4">
+                    <p class="ion-text-start text-first">DEPORTE</p>
+                  </ion-col>
+                  <ion-col size="8">
+                    <p class="ion-text-end text-last">Fútbol sala</p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="style-card-row-enclosure">
+                  <ion-col size="3">
+                    <p class="ion-text-start text-first">RECINTO</p>
+                  </ion-col>
+                  <ion-col size="9">
+                    <p class="ion-text-end text-last">
+                      San miguel, Polideportivo CORDEP
+                    </p>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="style-card-row-date">
+                  <ion-col size="8">
+                    <p class="ion-text-start text-date">
+                      FECHA
+                      <span class="ion-text-start text-last">
+                        MARTES, 08 DE SEPT</span>
+                    </p>
+                  </ion-col>
+                  <ion-col size="4">
+                    <p class="ion-text-end text-date">
+                      HORA
+                      <span class="ion-text-start text-last"> 1:00 A.M</span>
+                    </p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

@@ -1,0 +1,74 @@
+<app-header titulo="INICIO"></app-header>
+
+<ion-content>
+  <ion-grid class="style-grid-item">
+    <ion-row>
+      <ion-col size="12" class="ion-margin-start ion-margin-top style-col-item">
+        <ion-item lines="none">
+          <ion-avatar slot="start" *ngIf="TempImage">
+            <ion-img ionImgViewer scheme="dark" *ngFor="let i of TempImage" [src]="i"></ion-img>
+          </ion-avatar>
+          <ion-label>
+            <h3>{{ username }}</h3>
+            <p>JUGADOR</p>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="ion-padding style-col-item-list">
+        <ion-item class="ion-no-padding" routerLink="/dashboard/profile-user" routerDirection="root" mode="md">
+          <ion-label class="ion-text-start">Tu Perfil</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item class="ion-no-padding" routerLink="/dashboard/team/create-team" routerDirection="root" mode="md">
+          <ion-label class="ion-text-start">Crear equipo</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item class="ion-no-padding" routerLink="/partido/agenda-partido" mode="md">
+          <ion-label class="ion-text-start">Agenda de Partidos</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" class="ion-padding style-col-text-search">
+        <p>BUSCA EQUIPOS PARA UNIRTE</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid fixed>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="11">
+        <ion-searchbar type="search" mode="md" placeholder="Búscar equipos" routerLink="/dashboard/team/search-team"
+          routerDirection="root"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="text-slide">
+        <ion-item>
+          <ion-label class="ion-text-start">TUS EQUIPOS</ion-label>
+          <ion-label class="ion-text-end" routerLink="/dashboard/team/user-team">VER TODOS
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-no-padding ion-margin-start ion-align-items-baseline">
+      <ion-col size="12">
+        <app-carousel-teams [teamUsers]="teamUsers$| async" [errorHandle]="errorHandle$" (showGetModalManageTeam)="getModalManageTeam($event.IdEquipo,$event.CantidadMiembros,$event.routerLink,$event.nameTeam)"></app-carousel-teams>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-no-padding ion-margin-start ion-align-items-baseline">
+      <ion-col size="12" class="text-slide">
+        <p>INVITACIONES DE EQUIPOS</p>
+      </ion-col>
+      <ion-col size="12" class="card-slide ion-no-padding">
+        <app-carousel-invitation (slideTouchCarousel)="getCarouselInvitationPlayersScroll($event)" [invitationPlayers]="carouselInvitationPlayers$| async" [errorHandle]=" errorHandle$"></app-carousel-invitation>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-no-padding ion-margin-start ion-align-items-baseline">
+      <ion-col size="12" class="text-slide">
+        <p>SOLICITUDES ENVIADAS</p>
+      </ion-col>
+      <ion-col size="12" class="card-slide ion-no-padding">
+        <!--<app-carousel-invitation></app-carousel-invitation>-->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

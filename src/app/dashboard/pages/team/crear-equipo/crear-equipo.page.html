@@ -1,0 +1,165 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button icon="chevron-back-outline" mode="md" defaultHref="/dashboard/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title mode="ios">CREAR EQUIPO</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-padding-start ion-padding-end ion-padding-bottom" fixed>
+    <form (ngSubmit)="getRegisterTeam()" autocomplete="off" [formGroup]="formRegistroEquipo">
+      <ion-row>
+        <ion-col size="12" class="ion-text-start ion-padding-top">
+          <p>INGRESA EL NOMBRE DE TU EQUIPO</p>
+        </ion-col>
+        <ion-col size="12">
+          <ion-item>
+            <ion-input maxlength="50" type="text" formControlName="nombre" placeholder="Ej : Equipo Completo F.C">
+            </ion-input>
+          </ion-item>
+          <div [ngClass]="formRegistroEquipo.controls.nombre.errors?'ion-text-left':'hide'" class="ion-text-left"
+            *ngFor="let error of errorMessages.nombre">
+            <ng-container
+              *ngIf="formRegistroEquipo.controls.nombre.hasError(error.type) && (formRegistroEquipo.controls.nombre.dirty || formRegistroEquipo.controls.nombre.touched)">
+              <ion-text color="light">{{error.message}}</ion-text>
+
+            </ng-container>
+          </div>
+        </ion-col>
+        <ion-col size="12" class="ion-text-start ion-padding-top">
+          <p>¿QUÉ TIPO DE EQUIPO ES?</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-radio-group formControlName="tipo">
+          <ion-col size="4" size-sm="4">
+            <ion-card>
+              <ion-card-title class="ion-text-center style-space-card">
+                <ion-label>CLUB</ion-label>
+              </ion-card-title>
+              <ion-card-content>
+                <ion-radio value="1" mode="md"></ion-radio>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col size="4" size-sm="4">
+            <ion-card>
+              <ion-card-title class="ion-text-center">EQUIPO</ion-card-title>
+              <ion-card-subtitle class="ion-text-center">AMATEUR</ion-card-subtitle>
+              <ion-card-content>
+                <ion-radio value="2" mode="md"></ion-radio>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col size="4" size-sm="4">
+            <ion-card>
+              <ion-card-title class="ion-text-center style-space-card">
+                <ion-label>OTRO</ion-label>
+              </ion-card-title>
+              <ion-card-content>
+                <ion-radio value="3" mode="md"></ion-radio>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-radio-group>
+        <div [ngClass]="formRegistroEquipo.controls.tipo.errors?'ion-text-left':'hide'" class="ion-text-left"
+          *ngFor="let error of errorMessages.tipo">
+          <ng-container
+            *ngIf="formRegistroEquipo.controls.tipo.hasError(error.type) && (formRegistroEquipo.controls.tipo.dirty || formRegistroEquipo.controls.tipo.touched)">
+            <ion-text color="light">{{error.message}}</ion-text>
+
+          </ng-container>
+        </div>
+        <ion-col size="12" lines="none">
+          <ion-item lines="none" class="style-line-item-select">
+            <ion-label>EDAD PROMEDIO DEL EQUIPO</ion-label>
+            <ion-select formControlName="edad" interface="popover">
+              <ion-select-option *ngFor="let ag of AgeAverage" value="{{ag.IdEdadPromedio}}">{{ag.EdadPromedio}}
+              </ion-select-option>
+            </ion-select>
+            <ion-icon name="caret-up-outline" slot="end"></ion-icon>
+          </ion-item>
+          <div [ngClass]="formRegistroEquipo.controls.edad.errors?'ion-text-left':'hide'" class="ion-text-left"
+            *ngFor="let error of errorMessages.edad">
+            <ng-container
+              *ngIf="formRegistroEquipo.controls.edad.hasError(error.type) && (formRegistroEquipo.controls.edad.dirty || formRegistroEquipo.controls.edad.touched)">
+              <ion-text color="light">{{error.message}}</ion-text>
+
+            </ng-container>
+          </div>
+        </ion-col>
+        <ion-col size="12" lines="none">
+          <ion-item lines="none" class="style-line-item-select">
+            <ion-label>GENERO DEL EQUIPO</ion-label>
+            <ion-select formControlName="genero" interface="popover">
+              <ion-select-option *ngFor="let gender of genders" value="{{gender.IdGeneroEquipo}}">{{gender.Descripcion}}
+              </ion-select-option>
+            </ion-select>
+            <ion-icon name="caret-up-outline" slot="end"></ion-icon>
+          </ion-item>
+          <div [ngClass]="formRegistroEquipo.controls.genero.errors?'ion-text-left':'hide'" class="ion-text-left"
+            *ngFor="let error of errorMessages.genero">
+            <ng-container
+              *ngIf="formRegistroEquipo.controls.genero.hasError(error.type) && (formRegistroEquipo.controls.genero.dirty || formRegistroEquipo.controls.genero.touched)">
+              <ion-text color="light">{{error.message}}</ion-text>
+
+            </ng-container>
+          </div>
+        </ion-col>
+        <ion-col size="12" lines="none">
+          <ion-item lines="none" class="style-line-item-select">
+            <ion-label>DEPORTE FAVORITO</ion-label>
+            <ionic-selectable [items]="deports" formControlName="deporte" itemValueField="IdDeporte"
+              headerColor="danger" [searchFailText]="'No se encontro la búsqueda'"
+              searchPlaceholder="Ingresar su Búsqueda" [shouldFocusSearchbar]="true" itemTextField="NombreDeporte"
+              [canSearch]="true" closeButtonText="Regresar">
+              >
+              <ng-template ionicSelectableItemIconTemplate let-port="item" let-isPortSelected="isItemSelected">
+                <ion-icon slot="end" [name]="isPortSelected ? 'checkmark-circle' : 'radio-button-off'"
+                  [color]="isPortSelected ? 'danger' : null">
+                </ion-icon>
+              </ng-template>
+              <ng-template ionicSelectableTitleTemplate>
+
+              </ng-template>
+            </ionic-selectable>
+            <ion-icon name="caret-up-outline" slot="end"></ion-icon>
+          </ion-item>
+          <div [ngClass]="formRegistroEquipo.controls.deporte.errors?'ion-text-left':'hide'" class="ion-text-left"
+            *ngFor="let error of errorMessages.deporte">
+            <ng-container
+              *ngIf="formRegistroEquipo.controls.deporte.hasError(error.type) && (formRegistroEquipo.controls.deporte.dirty || formRegistroEquipo.controls.deporte.touched)">
+              <ion-text color="light">{{error.message}}</ion-text>
+
+            </ng-container>
+          </div>
+          <small>(Podrás agregar más deportes después)</small>
+        </ion-col>
+        <ion-col size="12" class="ion-margin-top">
+          <p>DESCRIPCIÓN</p>
+          <span> (OPCIONAL)</span>
+        </ion-col>
+        <ion-col size="12">
+          <ion-textarea rows="6" cols="20" formControlName="descripcion"
+            placeholder="También puedes ingresar información que motive a otros usuarios a unirse a tu equipo Ej: Mujeres futbolistas de Maipú"
+            value="" maxlength="50">
+          </ion-textarea>
+          <strong class="style-line-count-character ion-float-right">{{ 50 -
+            formRegistroEquipo.controls.descripcion.value.length }}<small class="style-line-count-character-letter">
+              caracteres restastes</small> </strong>
+
+        </ion-col>
+        <ion-col size="12">
+          <span class="style-small-textarea">Esta informacion será visible cuando consulten el perfil de tu
+            equipo.</span>
+        </ion-col>
+
+        <ion-col size="12" class="ion-margin-top ion-padding-top ion-margin-bottom">
+          <ion-button expand="block" type="submit" [disabled]="!formRegistroEquipo.valid">CREAR EQUIPO </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
+</ion-content>

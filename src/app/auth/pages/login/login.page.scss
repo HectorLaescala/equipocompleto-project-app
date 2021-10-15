@@ -1,0 +1,83 @@
+ion-icon[name="lock-closed"],
+ion-icon[name="person"] {
+  color: #333333;
+}
+
+ion-item {
+  --highlight-color-invalid: #f43c4b;
+  --highlight-height: 1px;
+  margin-bottom: 3px;
+}
+
+ion-input {
+  font-family: Montserrat-Regular;
+}
+
+ion-icon[name="eye-off"] {
+  color: #b9b8b9;
+}
+
+img {
+  max-width: none !important;
+}
+
+ion-text {
+  color: #d0021b;
+  font-family: Montserrat-Regular;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 13px;
+}
+
+.hide {
+  display: none;
+}
+
+.style-vertical-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px 20px 0px;
+}
+
+.style-user-account {
+  color: #c90949;
+}
+.style-user-password {
+  color: #626262;
+}
+
+.style-user-account,
+.style-user-password {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.83px;
+  line-height: 13px;
+  font-family: Montserrat-SemiBold;
+  cursor: pointer;
+}
+
+.style-user-button {
+  --border-color: #c90949;
+  --border-radius: 41.5px;
+  color: #fff;
+  font-size: 14px;
+  height: 56px;
+  --background: #c90949;
+  letter-spacing: 0;
+  line-height: 18px;
+  font-family: Montserrat-SemiBold;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-top: 60px;
+}
+
+.style-fullheight {
+  height: 100%;
+}
+
+.style-fullheightRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

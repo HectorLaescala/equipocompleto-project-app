@@ -1,0 +1,95 @@
+.style-row-align-list {
+  ion-avatar > ion-img {
+    border-radius: 5px;
+    margin-top: 0px;
+    height: 48px;
+    width: 48px;
+  }
+
+  ion-label {
+    line-height: 7px;
+    margin-left: 6px;
+  }
+
+  ion-list-header {
+    color: #333333;
+    font-family: Montserrat-Bold;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 13px;
+    padding-left: 11px;
+    margin-bottom: 3px;
+  }
+
+  ion-item {
+    --inner-padding-top: 15px;
+    border-top: 1px solid #ebebeb;
+    --padding-bottom: 17px;
+    --padding-top: 7px;
+    margin-left: 10px;
+    margin-right: 10px;
+    --padding-end: 0px;
+    --inner-padding-end: 0px;
+  }
+
+  ion-item:last-child {
+    border-bottom: 1px solid #ebebeb;
+    margin-left: 10px;
+  }
+
+  ion-item ion-label > p {
+    color: #333333;
+    font-family: Montserrat-Regular;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 0px;
+  }
+
+  ion-item ion-label > span {
+    color: #707070;
+    font-family: Montserrat-Regular;
+    font-size: 10px;
+    letter-spacing: 0;
+  }
+
+  ion-button {
+    --border-color: transparent;
+    --background: #ffffff;
+    --border-radius: 50px;
+    --border-width: 0px;
+    --color: #333333;
+    margin-top: 0px;
+  }
+}
+
+.style-skeleton {
+  ion-item {
+    border-radius: 10px;
+    --background: #fff;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 3px 1px -2px rgba(51, 51, 51, 0.05),
+      0 1px 5px 0 rgba(51, 51, 51, 0.1);
+    margin: 0px 10px 15px 10px;
+    --padding-top: 0px;
+    --padding-start: 10px;
+    --padding-end: 2.5px;
+    --padding-bottom: 0px;
+  }
+
+  ion-avatar {
+    --border-radius: 5px;
+    height: 48px;
+    width: 48px;
+  }
+
+  ion-label {
+    padding-right: 20px;
+    margin-top: 0px;
+
+    P,
+    h3 {
+      margin-left: 0px;
+    }
+  }
+}
