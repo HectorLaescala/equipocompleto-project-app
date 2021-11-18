@@ -26,7 +26,7 @@ export class MisEquiposPage implements OnInit {
     this.getTeamsUserMembers();
   }
 
-  getModalManageTeam(id: number, cantMembers: number,routerLink:string,nameTeam:string) {
+  getModalManageTeam(id: number, cantMembers: number, routerLink: string, nameTeam: string) {
     const params = {
       id,
       cantMembers,
@@ -41,6 +41,21 @@ export class MisEquiposPage implements OnInit {
     }
 
     this.router.navigate(['/dashboard/team/profile-team'], navigationExtras);
+  }
+
+  getModalManageTeamUser(id: number, typeInvitation: string) {
+    const params = {
+      id,
+      typeInvitation
+    }
+
+    let navigationExtras: NavigationExtras = {
+      state: {
+        params: params
+      }
+    }
+
+    this.router.navigate(['/dashboard/team/detail-team'], navigationExtras);
   }
 
   getTeamsUserAdministrator() {

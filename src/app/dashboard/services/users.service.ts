@@ -4,13 +4,12 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 
 import { environment } from "src/environments/environment";
 
-import { carouselInvitationPlayers, Deport, DeportsFavorite, Genders, Profile, Region } from '../../auth/interfaces/user.interface';
+import { Deport, DeportsFavorite, Genders, Profile, Region } from '../../auth/interfaces/user.interface';
 
 import { StorageService } from "src/app/services/storage.service";
 import { AlertsService } from '../../services/alerts.service';
 import { ModalsService } from "src/app/services/modals.service";
-import { BehaviorSubject, Observable, of, throwError } from "rxjs";
-import { catchError, take, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable} from "rxjs";
 
 
 const url = environment.urlApi;
@@ -22,9 +21,7 @@ const url = environment.urlApi;
 export class UsersService {
 
   private pageDeportsFavorite: number = 0;
-  private pageCarouselPlayers: number = 0;
-  private carouselInvitationPlayersSubject = new BehaviorSubject<carouselInvitationPlayers[]>(null);
-  carouselInvitationPlayers$ = this.carouselInvitationPlayersSubject.asObservable();
+ 
 
   constructor(
     private http: HttpClient,
@@ -168,43 +165,7 @@ export class UsersService {
   }
 
 
-  getCarouselInvitationPlayers(idUser: number) {
 
-    this.pageCarouselPlayers = 1;
-
-    const params = new HttpParams()
-      .set("IdUsuario", idUser)
-      .set("page", `${this.pageCarouselPlayers}`);
-
-    return this.http.get<carouselInvitationPlayers[]>(`/api/invitacionusuario`, { params }).pipe(
-      take(1),
-      tap(data => this.carouselInvitationPlayersSubject.next(data)),
-      catchError(() => throwError(false)));
-  }
-
-  getCarouselInvitationPlayersScroll(idUser: number) {
-
-    this.pageCarouselPlayers++;
-
-    const params = new HttpParams()
-      .set("IdUsuario", idUser)
-      .set("page", `${this.pageCarouselPlayers}`);
-
-    return this.http.get<carouselInvitationPlayers[]>(`/api/invitacionusuario`, { params }).
-      pipe(
-        take(1),
-        withLatestFrom(this.carouselInvitationPlayers$),
-        tap(([apiResponse, playerTeams]) => {
-
-          if (apiResponse.length === 0) {
-            this.carouselInvitationPlayersSubject.next([...playerTeams]);
-          }
-
-          const data = [...playerTeams, ...apiResponse];
-          this.carouselInvitationPlayersSubject.next(data);
-
-        }), catchError((_) => throwError(false)));
-  }
 
 
 }

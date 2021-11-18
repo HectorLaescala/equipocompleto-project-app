@@ -10,8 +10,8 @@ export class CarouselTeamsComponent implements OnInit {
 
   @Input() teamUsers: TeamUsers[] | null = null;
   @Input() errorHandle: any | null = null;
-  @Output() showGetModalManageTeam = new EventEmitter<{ IdEquipo: number, CantidadMiembros: number,routerLink:string,nameTeam:string }>();
-  
+  @Output() showGetModalManageTeam = new EventEmitter<{ IdEquipo: number, CantidadMiembros: number, routerLink: string, nameTeam: string, typeRole: string }>();
+
   constructor() { }
 
   ngOnInit() { }
@@ -22,8 +22,8 @@ export class CarouselTeamsComponent implements OnInit {
     resistanceRatio: 0
   };
 
-  getModalManageTeam(IdEquipo: number, CantidadMiembros: number,routerLink:string,nameTeam:string) {
-    this.showGetModalManageTeam.emit({ IdEquipo, CantidadMiembros,routerLink,nameTeam });
+  getModalManageTeam(IdEquipo: number, CantidadMiembros: number, routerLink: string, nameTeam: string, typeRole: string) {
+    this.showGetModalManageTeam.emit({ IdEquipo, CantidadMiembros, routerLink, nameTeam, typeRole });
   }
 
 }

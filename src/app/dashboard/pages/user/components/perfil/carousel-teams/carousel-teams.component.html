@@ -1,7 +1,7 @@
 <div class="card-slide ion-no-padding" *ngIf="teamUsers; else loadingOrError">
   <ng-container *ngIf="teamUsers.length; else empty">
     <ion-slides [options]="slideOpts">
-      <ion-slide *ngFor="let teamUser of teamUsers" (click)="getModalManageTeam(teamUser.IdEquipo, teamUser.CantidadMiembros, '/dashboard/profile', teamUser.Nombre)">
+      <ion-slide *ngFor="let teamUser of teamUsers" (click)="getModalManageTeam(teamUser.IdEquipo, teamUser.NumeroMiembros, '/dashboard/profile', teamUser.Nombre, teamUser.TipoUsuario)">
         <ion-card mode="md">
           <ion-card-content>
             <ion-grid>
@@ -20,8 +20,8 @@
                   </ion-item>
                   <p>{{ teamUser.Nombre}}</p>
                   <p>
-                    {{ teamUser.CantidadMiembros }} {{
-                    teamUser.CantidadMiembros > 1 ? " miembros" : " miembro"
+                    {{ teamUser.NumeroMiembros }} {{
+                    teamUser.NumeroMiembros > 1 ? " miembros" : " miembro"
                     }}
                   </p>
                 </ion-col>
@@ -45,7 +45,7 @@
   </div>
   <ng-template #loading>
     <div class="style-skeleton card-slide">
-      <ion-slides [options]="slideOptsMiddle">
+      <ion-slides [options]="slideOpts">
         <ion-slide *ngFor="let account of [1, 1, 1, 1, 1]" class="animated flash slow infinite">
           <ion-card mode="md">
             <ion-card-content>

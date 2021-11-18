@@ -1,20 +1,17 @@
-<!--<ion-header class="ion-no-border">
+<ion-header class="ion-no-border">
   <ion-toolbar color="danger">
     <ion-buttons slot="start">
-      <ion-back-button
-        icon="chevron-back-outline"
-        mode="md"
-        defaultHref="/dashboard/team/profile-team"
-      ></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" mode="md" (click)="onClose()">
+        <ion-icon name="close"></ion-icon>
+      </ion-back-button>
     </ion-buttons>
     <ion-title mode="ios">Buscar jugadores</ion-title>
   </ion-toolbar>
-</ion-header>-->
+</ion-header>
 
 <ion-content class="ion-padding">
 
-  <ion-searchbar #searchbar autocomplete="on" autocorrect="on" type="search" mode="md"
-    [formControl]="searchFormControl"
+  <ion-searchbar #searchbar autocomplete="on" autocorrect="on" type="search" mode="md" [formControl]="searchFormControl"
     animated placeholder="Búscar jugadores" [debounce]="250" (ionClear)="ionClear()"></ion-searchbar>
 
   <div class="ion-text-center ion-margin-top" *ngIf="searching">
@@ -26,37 +23,42 @@
       <ion-col size="12">
         <ng-container *ngIf="playerTeams$ | async as playerTeams; else loadingOrErrorScroll">
           <ng-container *ngIf="playerTeams.length; else emptyScroll">
-              <ion-item lines="none" class="ion-no-padding" mode="md" *ngFor="let playerTeam of playerTeams">
-                <ion-avatar slot="start">
-                  <ion-img [src]="playerTeam.ImagenUsuario"></ion-img>
-                </ion-avatar>
-                <ion-label>
-                  <p>{{playerTeam.TipoUsuario.Descripcion}}</p>
-                  <h3>{{playerTeam.NombreUsuario}}</h3>
-                </ion-label>
-                <ion-button slot="end" expand="block" fill="outline"
-                  (click)="onSendInvitation(playerTeam.IdUsuario,playerTeam.StatusInvitacion)"
-                  [ngClass]="!playerTeam.StatusInvitacion? 'style-col-button-outline' : 'style-col-button'">
-                  {{ (!playerTeam.StatusInvitacion)? 'INVITAR': 'PENDIENTE'}}
-                </ion-button>
-              </ion-item>
+            <ion-item lines="none" class="ion-no-padding" mode="md" *ngFor="let playerTeam of playerTeams">
+              <ion-avatar slot="start">
+                <ion-img [src]="playerTeam.ImagenUsuario"></ion-img>
+              </ion-avatar>
+              <ion-label>
+                <p>{{playerTeam.TipoUsuario.Descripcion}}</p>
+                <h3>{{playerTeam.NombreUsuario}}</h3>
+              </ion-label>
+              <ion-button slot="end" expand="block" fill="outline"
+                (click)="onSendInvitation(playerTeam.IdUsuario,playerTeam.StatusInvitacion)"
+                [ngClass]="!playerTeam.StatusInvitacion? 'style-col-button-outline' : 'style-col-button'">
+                {{ (!playerTeam.StatusInvitacion)? 'INVITAR': 'PENDIENTE'}}
+              </ion-button>
+            </ion-item>
 
-            </ng-container>
-            <ion-infinite-scroll *ngIf="playerTeams.length > 0" class="ion-margin-top ion-padding-top" threshold="150px"
-              (ionInfinite)="getPlayersScroll($event)">
-              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando...">
-              </ion-infinite-scroll-content>
-            </ion-infinite-scroll>
-            <div class="style-errorHandle ion-margin-top" *ngIf="errorHandleScroll$ | async">
-              <h6>Error al cargar la <strong>lista de jugadores.</strong></h6>
-              <h6>Por favor,<strong> inténtelo de nuevo</strong> más tarde.</h6>
-            </div>
           </ng-container>
-          <ng-template #emptyScroll>
-            <ion-col size="12" class="ion-text-center">
-              <p>No he han encontrado resultados</p>
-            </ion-col>
-          </ng-template>
+          <ion-infinite-scroll *ngIf="playerTeams.length > 0" class="ion-margin-top ion-padding-top" threshold="150px"
+            (ionInfinite)="getPlayersScroll($event)">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+          <div class="style-errorHandle ion-margin-top" *ngIf="errorHandleScroll$ | async">
+            <h6>Error al cargar la <strong>lista de jugadores.</strong></h6>
+            <h6>Por favor,<strong> inténtelo de nuevo</strong> más tarde.</h6>
+          </div>
+        </ng-container>
+        <ng-template #emptyScroll>
+          <ion-col size="12" class="ion-text-center" *ngIf="statusHandleSearch">
+            <p>No se han encontrado resultados</p>
+          </ion-col>
+        </ng-template>
+
+        <div class="style-errorHandle ion-margin-top" *ngIf="errorHandleSearch$ | async">
+          <h6>Error al<strong> cargar resultados.</strong></h6>
+          <h6>Por favor,<strong> inténtelo de nuevo</strong> más tarde.</h6>
+        </div>
 
         <ng-template #loadingOrErrorScroll>
           <div class="style-errorHandle ion-margin-top" *ngIf="errorHandle$ | async; else loadingScroll">

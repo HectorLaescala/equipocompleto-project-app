@@ -16,7 +16,8 @@
         </app-list-team-administrator>
       </ion-col>
       <ion-col size="12">
-        <app-list-team-members [teamUsers]="teamMembers$| async" [errorHandle]=" errorHandle$">
+        <app-list-team-members [teamUsers]="teamMembers$| async" [errorHandle]=" errorHandle$"
+          (showGetModalManageTeam)="getModalManageTeamUser($event.IdEquipo,$event.typeInvitation)">
         </app-list-team-members>
       </ion-col>
     </ion-row>

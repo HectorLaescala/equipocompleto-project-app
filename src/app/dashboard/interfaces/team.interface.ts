@@ -3,7 +3,7 @@ export interface TeamUsers {
     IdEquipo: number;
     Nombre: string;
     TipoUsuario: string;
-    CantidadMiembros: number;
+    NumeroMiembros: number;
     ImagenEquipo:string;
 }
 
@@ -98,17 +98,5 @@ export interface listMembers {
 }
 
 
-export interface ListPlayer {
-    IdUsuario:          number;
-    NombreUsuario:      string;
-    TipoUsuario:        TipoUsuario;
-    ImagenUsuario:      string;
-    IdStatusInvitacion: number;
-    StatusInvitacion:   null;
-}
 
-export interface TipoUsuario {
-    IdTipoUsuario: number;
-    Descripcion:   string;
-}
 

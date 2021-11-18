@@ -1,0 +1,213 @@
+ion-title {
+  color: #ffffff;
+  font-family: Montserrat-SemiBold;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 22px;
+}
+
+ion-back-button {
+  display: block;
+}
+
+#header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f9f9f9;
+
+  ion-card {
+    box-shadow: none;
+    overflow: visible;
+    margin: 0px;
+    background: transparent;
+  }
+
+  p {
+    margin-top: 12px;
+    color: #333333;
+    font-family: Montserrat-Bold;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin-bottom: 3px;
+  }
+
+  span {
+    color: #707070;
+    font-family: Montserrat-Regular;
+    font-size: 10px;
+    letter-spacing: 0;
+  }
+
+  ion-avatar {
+    margin-top: 25px;
+    width: 72px;
+    height: 72px;
+
+    ion-img {
+      border-radius: 5px;
+    }
+  }
+}
+
+.segment {
+  background: #f9f9f9;
+  border-bottom: 1px solid #ebebeb;
+
+  ion-segment {
+    padding-top: 12px;
+  }
+
+  ion-segment ion-segment-button > ion-label {
+    font-size: 10px;
+    letter-spacing: 0;
+    line-height: 13px;
+    font-family: Montserrat-SemiBold;
+  }
+
+  .segment-button-checked {
+    ion-label {
+      color: #333333 !important;
+      font-weight: 600 !important;
+      font-family: Montserrat-SemiBold;
+    }
+  }
+
+  ion-segment-button {
+    --indicator-height: 1px !important;
+    --padding-top: 0px;
+    --padding-bottom: 5px;
+    --padding-start: 0px;
+    --padding-end: 0px;
+    --background: #f9f9f9;
+    --background-checked: #f9f9f9;
+    --color-checked: #c90949;
+  }
+}
+
+.item {
+  ion-item {
+    --padding-start: 0rem;
+    --inner-padding-end: 0rem;
+  }
+
+  ion-item:nth-child(4) {
+    margin-bottom: 0.4rem;
+  }
+
+  .item-title {
+    color: #333333;
+    font-family: Montserrat-SemiBold;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin-top: 0.8rem;
+  }
+
+  .item-text {
+    margin-bottom: 0px;
+    --color: #707070;
+    font-family: Montserrat-Regular;
+    font-size: 14px;
+  }
+
+  .item-label {
+    color: #333333;
+    font-family: Montserrat-Regular;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 22px;
+  }
+
+  ion-textarea {
+    --background: #ffffff;
+    border: 1px solid #ebebeb;
+    --color: #333333;
+    border-radius: 5px;
+    font-family: Montserrat-Regular;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 24px;
+    padding: 20px 20px 0px 16px;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+
+  .item-deports {
+    ion-item {
+      border-radius: 5px;
+      margin: 15px 0px 0px 0px;
+      box-shadow: 0 6px 30px 5px rgba(51, 51, 51, 0.05),
+        0 8px 10px -5px rgba(51, 51, 51, 0.1);
+    }
+
+    ion-item:nth-child(1) {
+      margin-top: 2rem;
+    }
+    ion-avatar {
+      border-radius: 7px;
+      background-color: #d8f7cf;
+      margin-left: 1rem;
+    }
+
+    ion-label {
+      color: #707070;
+      font-family: Montserrat-Regular;
+      font-size: 14px;
+      letter-spacing: 0;
+      line-height: 22px;
+    }
+
+    ion-icon[name="basketball-outline"] {
+      font-size: 29px;
+      margin-left: 6px;
+      margin-top: 5px;
+      color: #62e041;
+    }
+  }
+}
+
+.outline-button {
+  --border-color: #c90949;
+  --color:#c90949;
+  --border-radius: 41.5px;
+  --border-width: 1px;
+  --box-shadow: none;
+  font-size: 14px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-top: 18px;
+  height: 56px;
+  letter-spacing: 0;
+  line-height: 18px;
+  font-family: Montserrat-SemiBold;
+  margin-bottom: 20px;
+}
+
+.errorHandle {
+  flex-direction: column;
+  margin: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  h6,
+  strong {
+    text-align: center;
+    font-family: Montserrat-Regular;
+  }
+
+  h6 {
+    font-size: 0.9rem;
+    margin-top: 0rem;
+    margin-bottom: 0.3rem;
+  }
+
+  strong {
+    color: #c90949;
+    font-weight: 100;
+  }
+}

@@ -45,60 +45,28 @@
           <ion-list class="ion-no-padding">
             <ion-item lines="none" class="style-invite-player">
               <p slot="start">Invitar jugadores</p>
-              <ion-button slot="end" expand="block" fill="outline"
-                routerLink="/dashboard/team/invite-players/{{idTeam}}" routerDirection="root">
+              <ion-button slot="end" expand="block" fill="outline" (click)="onSearchPlayers()">
                 <ion-icon slot="icon-only" name="add-outline"></ion-icon>
               </ion-button>
             </ion-item>
           </ion-list>
         </ion-col>
         <ion-col size="12">
-          <app-list-members-team [listMembers]="listMembers"></app-list-members-team>
+          <app-list-members-team [listMembers]="listMembers" (showModalEditAdministration)="showModalRole($event.typeRole, $event.listMember)" [validated]="validated"></app-list-members-team>
         </ion-col>
         <ion-col size="12">
-          <ion-list class="ion-no-padding style-row-align-list" mode="md">
-            <ion-list-header class="style-list-header-postulant">
-              NUEVOS POSTULANTES</ion-list-header>
-            <ion-item lines="none" class="ion-no-padding">
-              <ion-avatar slot="start">
-                <ion-img src="../../assets/list/avatar-poe.png"></ion-img>
-              </ion-avatar>
-              <ion-label>
-                <span>POSTULANTE</span>
-                <p>Oscar Salazar</p>
-              </ion-label>
-              <ion-button slot="end" expand="block" fill="outline">
-                <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
-              </ion-button>
-            </ion-item>
-            <ion-item lines="none" class="ion-no-padding">
-              <ion-avatar slot="start">
-                <ion-img src="../../assets/list/avatar-leia.png"></ion-img>
-              </ion-avatar>
-              <ion-label>
-                <span>POSTULANTE</span>
-                <p>Manuel Dominguez</p>
-              </ion-label>
-              <ion-button slot="end" expand="block" fill="outline">
-                <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
-              </ion-button>
-            </ion-item>
-            <ion-item lines="none" class="ion-no-padding">
-              <ion-avatar slot="start">
-                <ion-img src="../../assets/list/avatar-leia.png"></ion-img>
-              </ion-avatar>
-              <ion-label>
-                <span>POSTULANTES</span>
-                <p>Renato Contreras</p>
-              </ion-label>
-              <ion-button slot="end" expand="block" fill="outline">
-                <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
-              </ion-button>
-            </ion-item>
-          </ion-list>
+          <app-list-members-new [listMembersNewPlayers]="listMembersNewPlayers$ | async"
+            [errorHandle]="errorHandleNewPlayers$" [errorHandleScroll]="errorHandleNewPlayersScroll$">
+          </app-list-members-new>
+          <ion-infinite-scroll *ngIf="(listMembersNewPlayers$ | async)?.length > 0" class="ion-margin-top ion-padding-top" threshold="150px"
+            (ionInfinite)="getListInvitationNewPlayersScroll($event)">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
         </ion-col>
         <ion-col size="12">
-          <ion-button class="style-outline-button" (click)="onGetOutTeam()" fill="outline" expand="block" mode="md">ABANDONAR EQUIPO
+          <ion-button class="style-outline-button" (click)="onGetOutTeam()" fill="outline" expand="block" mode="md">
+            ABANDONAR EQUIPO
           </ion-button>
         </ion-col>
       </ion-row>

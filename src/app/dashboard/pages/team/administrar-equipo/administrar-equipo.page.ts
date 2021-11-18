@@ -1,18 +1,29 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { IonContent, IonInfiniteScroll, ModalController } from '@ionic/angular';
 
-import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
-import { ModalWithOptionsPage } from "src/app/shared/pages/modals/modal-with-options/modal-with-options.page";
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { ModalWithOptionsPage } from 'src/app/shared/pages/modals/modal-with-options/modal-with-options.page';
 
-import { ageAverage, Deport, DeportsFavorite, GendersTeam, listMembers, TeamsUserProfile, TypeTeam } from 'src/app/dashboard/interfaces/team.interface';
+import {
+  ageAverage,
+  Deport,
+  DeportsFavorite,
+  GendersTeam,
+  listMembers,
+  TeamsUserProfile,
+  TypeTeam,
+} from 'src/app/dashboard/interfaces/team.interface';
 import { EquipoService } from 'src/app/dashboard/services/equipo.service';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ModalsService } from 'src/app/services/modals.service';
 import { ValidationsService } from 'src/app/services/validations.service';
 import { StorageService } from 'src/app/services/storage.service';
-
+import { InvitationService } from '../../../services/invitation.service';
+import { Subject, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { AdministrarTipoRolePage } from '../administrar-tipo-role/administrar-tipo-role.page';
 
 declare var window: any;
 
@@ -21,12 +32,12 @@ declare var window: any;
   templateUrl: './administrar-equipo.page.html',
   styleUrls: ['./administrar-equipo.page.scss'],
 })
-export class AdministrarEquipoPage implements OnInit {
+export class AdministrarEquipoPage {
   type: string;
   statusNotification: string = '';
-  genderName: string = "";
-  ageAverageName: string = "";
-  typeTeamName: string = "";
+  genderName: string = '';
+  ageAverageName: string = '';
+  typeTeamName: string = '';
   TempImage: string[] = [];
   pull: boolean = false;
   TeamsUserProfile: TeamsUserProfile[] = [];
@@ -42,31 +53,42 @@ export class AdministrarEquipoPage implements OnInit {
   cantMembers: number = 0;
   routerLink: string = '';
   nameTeam: string = '';
+  validated: boolean = false;
+  listMembersNewPlayers$ = this.invitationService.listInvitationPlayers$;
+  errorHandleNewPlayers$ = new Subject<boolean | null>();
+  errorHandleNewPlayersScroll$ = new Subject<boolean | null>();
 
   @ViewChild(IonInfiniteScroll, { static: false }) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent, { static: false }) IonContent: IonContent;
 
   formTeamAddDeport: FormGroup = this.formBuilder.group({
-    deport: ["", [Validators.required]],
+    deport: ['', [Validators.required]],
   });
 
-  formTeamsUserProfile: FormGroup = this.formBuilder.group(
-    {
-      notification: ["", []],
-      nombre: ["", [Validators.required], [this.validationsService.getValidatorsNameTeamProfile()]],
-      tipo: ["", [Validators.required]],
-      edad: ["", [Validators.required]],
-      genero: ["", [Validators.required]],
-      descripcion: ["", []]
-    });
+  formTeamsUserProfile: FormGroup = this.formBuilder.group({
+    notification: ['', []],
+    nombre: [
+      '',
+      [Validators.required],
+      [this.validationsService.getValidatorsNameTeamProfile()],
+    ],
+    tipo: ['', [Validators.required]],
+    edad: ['', [Validators.required]],
+    genero: ['', [Validators.required]],
+    descripcion: ['', []],
+  });
 
   public errorMessages = {
-    nombre: [{
-      type: "required", message: "Este dato es requerido"
-    }, {
-      type: "teamname",
-      message: "El nombre ya está siendo utilizado",
-    }]
+    nombre: [
+      {
+        type: 'required',
+        message: 'Este dato es requerido',
+      },
+      {
+        type: 'teamname',
+        message: 'El nombre ya está siendo utilizado',
+      },
+    ],
   };
 
   constructor(
@@ -80,25 +102,41 @@ export class AdministrarEquipoPage implements OnInit {
     private modals: ModalsService,
     private storage: StorageService,
     private modalController: ModalController,
+    private invitationService: InvitationService
   ) {
-
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(() => {
       if (router.getCurrentNavigation().extras.state) {
-        this.dataParams = this.router.getCurrentNavigation().extras.state.params;
+        this.dataParams =
+          this.router.getCurrentNavigation().extras.state.params;
         this.idTeam = this.dataParams.id;
         this.cantMembers = this.dataParams.cantMembers;
         this.routerLink = this.dataParams.routerLink;
         this.nameTeam = this.dataParams.nameTeam;
       }
-    })
+    });
   }
 
-  ngOnInit() {
 
+  onSearchPlayers() {
+    const params = {
+      id: this.idTeam,
+      cantMembers: this.cantMembers,
+      routerLink: this.routerLink,
+      nameTeam: this.nameTeam,
+    };
+
+    let navigationExtras: NavigationExtras = {
+      state: {
+        params: params,
+      },
+    };
+
+    this.router.navigate(['/dashboard/team/invite-players'], navigationExtras);
   }
 
   async ionViewDidEnter() {
     this.type = 'members';
+    this.validated = true;
     await this.getGenders();
     await this.getAgeAverage();
     await this.getDeports();
@@ -106,12 +144,22 @@ export class AdministrarEquipoPage implements OnInit {
     await this.getMembersTeam();
     await this.getTeamsUserProfileForm();
     await this.getProfileTeamImage();
+    this.getListInvitationNewPlayers();
+  }
+
+  ionViewWillLeave() {
+    this.IonContent.scrollToTop();
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+    this.errorHandleNewPlayers$.next(null);
+    this.errorHandleNewPlayersScroll$.next(null);
   }
 
   async getMembersTeam() {
-    await this.equipoService.getMembersTeam(this.idTeam).subscribe((members) => {
-      this.listMembers = members;
-    });
+    await this.equipoService
+      .getMembersTeam(this.idTeam)
+      .subscribe((members) => {
+        this.listMembers = members;
+      });
   }
 
   async getGenders() {
@@ -122,14 +170,16 @@ export class AdministrarEquipoPage implements OnInit {
 
   async getAgeAverage() {
     await this.equipoService.getAgeAverage().subscribe((ageAverage) => {
-      this.AgeAverage = ageAverage
+      this.AgeAverage = ageAverage;
     });
   }
 
   async getDeports() {
-    await this.equipoService.getDeportsFavoritesTeam(this.idTeam).subscribe((deports) => {
-      this.deports = deports;
-    });
+    await this.equipoService
+      .getDeportsFavoritesTeam(this.idTeam)
+      .subscribe((deports) => {
+        this.deports = deports;
+      });
   }
 
   async getTypeTeam() {
@@ -140,7 +190,7 @@ export class AdministrarEquipoPage implements OnInit {
 
   segmentChanged(event) {
     const type = event.detail.value;
-    if (type == "data") {
+    if (type == 'data') {
       this.formTeamsUserProfile.markAsPristine();
       this.getDeportsFavoriteTeam();
     }
@@ -154,27 +204,21 @@ export class AdministrarEquipoPage implements OnInit {
     } else if (option == 'tipo') {
       this.typeTeamName = event.detail.value.Descripcion;
     }
-
   }
 
   async getUpdateTeamProfile() {
-    const {
-      nombre,
-      descripcion,
-      genero,
-      tipo,
-      edad
-    } = this.formTeamsUserProfile.value;
+    const { nombre, descripcion, genero, tipo, edad } =
+      this.formTeamsUserProfile.value;
 
     const data = {
-      "IdEquipo": this.idTeam,
-      "IdUsuarioCreador": this.TeamsUserProfile[0].IdUsuarioCreador,
-      "IdTipoUsuario": this.TeamsUserProfile[0].TipoUsuario[0].IdRolJugador,
-      "NombreEquipo": nombre,
-      "Descripcion": descripcion,
-      "IdGeneroEquipo": genero.IdGeneroEquipo,
-      "IdTipoEquipo": tipo.IdTipoEquipo,
-      "IdEdadPromedio": edad.IdEdadPromedio
+      IdEquipo: this.idTeam,
+      IdUsuarioCreador: this.TeamsUserProfile[0].IdUsuarioCreador,
+      IdTipoUsuario: this.TeamsUserProfile[0].TipoUsuario[0].IdRolJugador,
+      NombreEquipo: nombre,
+      Descripcion: descripcion,
+      IdGeneroEquipo: genero.IdGeneroEquipo,
+      IdTipoEquipo: tipo.IdTipoEquipo,
+      IdEdadPromedio: edad.IdEdadPromedio,
     };
 
     this.alertsService.present('Cargando...');
@@ -184,16 +228,26 @@ export class AdministrarEquipoPage implements OnInit {
     this.alertsService.dismiss();
 
     if (valid) {
-      this.storage.setString("nameTeam", nombre);
+      this.storage.setString('nameTeam', nombre);
       this.formTeamsUserProfile.markAsPristine();
       this.getTeamsUserProfile();
-      await this.modals.getshowModalOption('style-icon-success', '¡Perfil del equipo editado exitosamente!', '', '', '');
+      await this.modals.getshowModalOption(
+        'style-icon-success',
+        '¡Perfil del equipo editado exitosamente!',
+        '',
+        '',
+        ''
+      );
     } else {
-      await this.modals.getshowModalOption('style-icon-error', '!Error! al editar perfil del equipo', '', 'Verifigue nuevamente los campos', '');
+      await this.modals.getshowModalOption(
+        'style-icon-error',
+        '!Error! al editar perfil del equipo',
+        '',
+        'Verifigue nuevamente los campos',
+        ''
+      );
     }
-
   }
-
 
   getAddPhotoProfile() {
     const options: CameraOptions = {
@@ -221,7 +275,6 @@ export class AdministrarEquipoPage implements OnInit {
     this.getExecuteImageProfile(options);
   }
 
-
   getExecuteImageProfile(options: CameraOptions) {
     this.camera.getPicture(options).then(
       (imageData) => {
@@ -237,29 +290,27 @@ export class AdministrarEquipoPage implements OnInit {
   }
 
   async getDeportsFavoriteTeam(event?) {
+    event ? (this.pull = false) : (this.pull = true);
 
-    (event) ? this.pull = false : this.pull = true;
+    await this.equipoService
+      .getDeportsFavoriteTeam(this.idTeam, this.pull)
+      .subscribe((deportsFavorite) => {
+        if (this.pull) {
+          this.deportsFavorite = [];
+        }
 
-    await this.equipoService.getDeportsFavoriteTeam(this.idTeam, this.pull).subscribe(deportsFavorite => {
+        if (deportsFavorite.DeportesFavEquipo) {
+          this.deportsFavorite.push(...deportsFavorite.DeportesFavEquipo);
+        }
 
-      if (this.pull) {
-        this.deportsFavorite = [];
-      }
+        this.infiniteScroll.complete();
 
-      if (deportsFavorite.DeportesFavEquipo) {
-        this.deportsFavorite.push(...deportsFavorite.DeportesFavEquipo);
-      }
-
-      this.infiniteScroll.complete();
-
-      if (deportsFavorite.DeportesFavEquipo === undefined) {
-        this.infiniteScroll.disabled = true;
-      } else {
-        this.infiniteScroll.disabled = false;
-      }
-
-
-    });
+        if (deportsFavorite.DeportesFavEquipo === undefined) {
+          this.infiniteScroll.disabled = true;
+        } else {
+          this.infiniteScroll.disabled = false;
+        }
+      });
   }
 
   onScrollTop() {
@@ -270,8 +321,8 @@ export class AdministrarEquipoPage implements OnInit {
     const params = this.formTeamAddDeport.value;
 
     const data = {
-      "IdEquipo": this.idTeam,
-      "IdDeporte": params.deport.IdDeporte,
+      IdEquipo: this.idTeam,
+      IdDeporte: params.deport.IdDeporte,
     };
 
     this.alertsService.present('Cargando...');
@@ -281,24 +332,35 @@ export class AdministrarEquipoPage implements OnInit {
     this.alertsService.dismiss();
 
     if (valid) {
-      await this.modals.getshowModalOption('style-icon-success', '¡Deporte agregado exitosamente!', '', '', '');
+      await this.modals.getshowModalOption(
+        'style-icon-success',
+        '¡Deporte agregado exitosamente!',
+        '',
+        '',
+        ''
+      );
       await this.getDeports();
       await this.getDeportsFavoriteTeam();
       this.formTeamAddDeport.reset();
     } else {
-      await this.modals.getshowModalOption('style-icon-error', '¡Ha ocurrido un error!', '', 'Por favor intentalo mas tarde', '');
+      await this.modals.getshowModalOption(
+        'style-icon-error',
+        '¡Ha ocurrido un error!',
+        '',
+        'Por favor intentalo mas tarde',
+        ''
+      );
     }
   }
 
   async getProfileTeamImage() {
     this.equipoService.getProfileTeamImage(this.idTeam).subscribe((resp) => {
       this.TempImage = [];
-      this.TempImage.push(resp["ImagenEquipo"]);
+      this.TempImage.push(resp['ImagenEquipo']);
     });
   }
 
   async getRemoveTeamDeport(IdDeporte: number, NombreDeporte: string) {
-
     const modal = await this.modalController.create({
       component: ModalWithOptionsPage,
       animated: true,
@@ -310,9 +372,9 @@ export class AdministrarEquipoPage implements OnInit {
         downTitle: '',
         downSubtitle: '',
         buttonCancel: 'No',
-        buttonConfirm: 'Si'
+        buttonConfirm: 'Si',
       },
-      cssClass: 'custom-modal-team-all'
+      cssClass: 'custom-modal-team-all',
     });
 
     await modal.present();
@@ -320,94 +382,179 @@ export class AdministrarEquipoPage implements OnInit {
     const { data } = await modal.onDidDismiss();
 
     if (data.params) {
-
       this.alertsService.present('Cargando...');
 
-      const valid = await this.equipoService.getRemoveTeamDeport(this.idTeam, IdDeporte);
+      const valid = await this.equipoService.getRemoveTeamDeport(
+        this.idTeam,
+        IdDeporte
+      );
 
       this.alertsService.dismiss();
 
       if (valid) {
-        await this.modals.getshowModalOption('style-icon-success', `Deporte ${NombreDeporte} ha sido eliminado correctamente`, '', '', '');
+        await this.modals.getshowModalOption(
+          'style-icon-success',
+          `Deporte ${NombreDeporte} ha sido eliminado correctamente`,
+          '',
+          '',
+          ''
+        );
         await this.getDeports();
         await this.getDeportsFavoriteTeam();
         this.onScrollTop();
       } else {
-        await this.modals.getshowModalOption('style-icon-error', '¡Ha ocurrido un error!', '', 'Por favor intentalo mas tarde', '');
+        await this.modals.getshowModalOption(
+          'style-icon-error',
+          '¡Ha ocurrido un error!',
+          '',
+          'Por favor intentalo mas tarde',
+          ''
+        );
       }
-
     }
   }
 
-
   async getTeamsUserProfileForm() {
-    await this.equipoService.getTeamsUserProfile(this.idTeam).subscribe(resp => {
-      this.TeamsUserProfile.push(resp);
+    await this.equipoService
+      .getTeamsUserProfile(this.idTeam)
+      .subscribe((resp) => {
+        this.TeamsUserProfile.push(resp);
 
-      this.formTeamsUserProfile.reset({
-        nombre: resp.NombreEquipo,
-        tipo: {
-          IdTipoEquipo: resp.TipoEquipo[0].IdTipoEquipo,
-          Descripcion: resp.TipoEquipo[0].Descripcion,
-        },
-        genero: {
-          IdGeneroEquipo: resp.Genero[0].IdGenero,
-          Descripcion: resp.Genero[0].Descripcion,
-        },
-        edad: {
-          IdEdadPromedio: resp.EdadPromedio[0].IdEdadPromedio,
-          Descripcion: resp.EdadPromedio[0].EdadPromedio,
-        },
-        descripcion: resp.Descripcion
+        this.formTeamsUserProfile.reset({
+          nombre: resp.NombreEquipo,
+          tipo: {
+            IdTipoEquipo: resp.TipoEquipo[0].IdTipoEquipo,
+            Descripcion: resp.TipoEquipo[0].Descripcion,
+          },
+          genero: {
+            IdGeneroEquipo: resp.Genero[0].IdGenero,
+            Descripcion: resp.Genero[0].Descripcion,
+          },
+          edad: {
+            IdEdadPromedio: resp.EdadPromedio[0].IdEdadPromedio,
+            Descripcion: resp.EdadPromedio[0].EdadPromedio,
+          },
+          descripcion: resp.Descripcion,
+        });
+
+        this.statusNotification = resp.IdActivaInvitacion;
+        this.storage.setString('nameTeam', resp.NombreEquipo);
+        this.genderName = resp.Genero[0].Descripcion;
+        this.typeTeamName = resp.TipoEquipo[0].Descripcion;
+        this.ageAverageName = resp.EdadPromedio[0].EdadPromedio;
+        this.selectedToggle = resp.IdActivaInvitacion == '1' ? true : false;
       });
-
-      this.statusNotification = resp.IdActivaInvitacion;
-      this.storage.setString("nameTeam", resp.NombreEquipo);
-      this.genderName = resp.Genero[0].Descripcion;
-      this.typeTeamName = resp.TipoEquipo[0].Descripcion;
-      this.ageAverageName = resp.EdadPromedio[0].EdadPromedio;
-      this.selectedToggle = (resp.IdActivaInvitacion == '1') ? true : false;
-    });
   }
 
   getTeamsUserProfile() {
-    this.equipoService.getTeamsUserProfile(this.idTeam).subscribe(resp => {
+    this.equipoService.getTeamsUserProfile(this.idTeam).subscribe((resp) => {
       this.TeamsUserProfile = [];
-      this.TeamsUserProfile.push({ ...resp })
+      this.TeamsUserProfile.push({ ...resp });
     });
   }
-
 
   onChangeToggle() {
     const { notification } = this.formTeamsUserProfile.value;
     let valueNotification: number = 0;
 
-    (notification) ? valueNotification = 1 : valueNotification = 0;
+    notification ? (valueNotification = 1) : (valueNotification = 0);
 
     this.alertsService.present('Cargando...');
 
-    this.equipoService.getActiveInvitationSwitch(this.idTeam, valueNotification).subscribe(resp => {
-      if (resp == "1") {
-        this.selectedToggle = (notification == 1) ? true : false;
-        this.alertsService.dismiss();
-        this.modals.getshowModalOption('style-icon-success', `Se ha guardado correctamente la configuración`, '', '', '');
-      } else {
-        this.selectedToggle = false;
-        this.alertsService.dismiss();
-        this.modals.getshowModalOption('style-icon-error', '¡Ha ocurrido un error!', '', 'Por favor intentalo mas tarde', '');
-      }
-    }, () => {
-      this.selectedToggle = false;
-      this.alertsService.dismiss();
-      this.modals.getshowModalOption('style-icon-error', '¡Ha ocurrido un error!', '', 'Por favor intentalo mas tarde', '');
-    });
+    this.equipoService
+      .getActiveInvitationSwitch(this.idTeam, valueNotification)
+      .subscribe(
+        (resp) => {
+          if (resp == '1') {
+            this.selectedToggle = notification == 1 ? true : false;
+            this.alertsService.dismiss();
+            this.modals.getshowModalOption(
+              'style-icon-success',
+              `Se ha guardado correctamente la configuración`,
+              '',
+              '',
+              ''
+            );
+          } else {
+            this.selectedToggle = false;
+            this.alertsService.dismiss();
+            this.modals.getshowModalOption(
+              'style-icon-error',
+              '¡Ha ocurrido un error!',
+              '',
+              'Por favor intentalo mas tarde',
+              ''
+            );
+          }
+        },
+        () => {
+          this.selectedToggle = false;
+          this.alertsService.dismiss();
+          this.modals.getshowModalOption(
+            'style-icon-error',
+            '¡Ha ocurrido un error!',
+            '',
+            'Por favor intentalo mas tarde',
+            ''
+          );
+        }
+      );
   }
 
-
   onGetOutTeam() {
-    this.equipoService.getOutTeam(this.storage.userProfile.IdUsuario, this.idTeam).subscribe(resp => {
-      console.log(resp);
-    })
+    this.equipoService
+      .getOutTeam(this.storage.userProfile.IdUsuario, this.idTeam)
+      .subscribe((resp) => {
+        console.log(resp);
+      });
+  }
+
+  getListInvitationNewPlayers() {
+    this.invitationService.getListInvitationNewPlayers(this.idTeam).pipe(
+      catchError((err) => {
+        this.errorHandleNewPlayers$.next(true);
+        return throwError(err);
+      })).subscribe();
+  }
+
+  getListInvitationNewPlayersScroll(event) {
+    if (event) {
+      this.invitationService.getListInvitationNewPlayersScroll(this.idTeam).pipe(
+        tap(([resp]) => {
+
+          event.target.complete();
+
+          if (resp?.length === 0) {
+            event.target.disabled = true;
+          }
+        }),
+        catchError((err) => {
+          event.target.complete();
+          event.target.disabled = true;
+          this.errorHandleNewPlayersScroll$.next(true);
+          return throwError(err);
+        })).subscribe();
+    }
+  }
+
+  async showModalRole(typeRole: number, listMembers: listMembers) {
+    if (typeRole == 2) {
+      await this.showModalEditAdministration(typeRole,listMembers);
+    }
+  }
+
+  async showModalEditAdministration(typeRole:number,listMembers: listMembers) {
+    const modal = await this.modalController.create({
+      component: AdministrarTipoRolePage,
+      animated: true,
+      backdropDismiss: false,
+      componentProps: {
+        listMembers,
+        typeRole
+      },
+      cssClass: 'custom-modal-team-all'
+    });
+    return await modal.present();
   }
 
 }

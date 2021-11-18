@@ -39,14 +39,3 @@ export interface Region {
     Vigencia:    number;
 }
 
-
-export interface carouselInvitationPlayers {
-    IdInvitacionUsuario: number;
-    IdUsuario:           number;
-    IdEquipo:            number;
-    IdEstadoinvitacion:  number;
-    Descripcion:         string;
-    NombreEquipo:        string;
-    NumeroMiembros:      number;
-    ImagenUsuario:       string;
-}

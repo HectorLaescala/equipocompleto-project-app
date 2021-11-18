@@ -1,0 +1,52 @@
+<div class="skeleton">
+  <div id="header">
+    <ion-card color="light">
+      <ion-avatar>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+    </ion-card>
+    <p>
+      <ion-skeleton-text animated></ion-skeleton-text>
+    </p>
+    <span>
+      <ion-skeleton-text animated></ion-skeleton-text>
+    </span>
+  </div>
+  <div class="segment">
+    <ion-segment mode="md">
+      <ion-segment-button >
+        <ion-label>
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-label>
+      </ion-segment-button>
+      <ion-segment-button>
+        <ion-label>
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div class="item">
+    <ion-item
+    lines="none"
+    mode="md"
+    class="ion-no-padding"
+    *ngFor="let account of [1, 1, 1, 1, 1,1,1,1,1,1]"
+    class="animated flash slow infinite"
+  >
+    <ion-avatar slot="start">
+      <ion-skeleton-text
+        class="animated flash slow infinite"
+      ></ion-skeleton-text>
+    </ion-avatar>
+    <ion-label>
+      <p>
+        <ion-skeleton-text width="20%"></ion-skeleton-text>
+      </p>
+      <h3>
+        <ion-skeleton-text width="20%"></ion-skeleton-text>
+      </h3>
+    </ion-label>
+  </ion-item>
+  </div>
+</div>

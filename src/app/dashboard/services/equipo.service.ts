@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { ageAverage, Deport, GendersTeam, listDeportsFavorite, listMembers, ListPlayer, TeamsUserProfile, TeamUsers, TypeTeam } from '../interfaces/team.interface';
+import { Observable } from 'rxjs';
+import { ageAverage, Deport, GendersTeam, listDeportsFavorite, listMembers, TeamsUserProfile, TeamUsers, TypeTeam } from '../interfaces/team.interface';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ModalsService } from 'src/app/services/modals.service';
-import { catchError, take, tap, withLatestFrom } from 'rxjs/operators';
 
 
 @Injectable({
@@ -17,13 +16,9 @@ import { catchError, take, tap, withLatestFrom } from 'rxjs/operators';
 export class EquipoService {
 
   private url = environment.urlApi;
-  private playerTeamsSubject = new BehaviorSubject<ListPlayer[]>(null);
-  playerTeams$ = this.playerTeamsSubject.asObservable();
-
-
 
   pageDeportsFavorite: number = 0;
-  pageSearchPlayer: number = 0;
+
 
   constructor(
     private http: HttpClient,
@@ -204,62 +199,6 @@ export class EquipoService {
   }
 
 
-  getListPlayerTeam(idTeam: number):Observable<ListPlayer[]>{
-
-    this.pageSearchPlayer = 1;
-
-    const params = new HttpParams()
-      .set("IdEquipo", idTeam)
-      .set("page", `${this.pageSearchPlayer}`);
-
-    return this.http.get<ListPlayer[]>(`/api/Usuario`, { params }).pipe(
-      take(1),
-      tap(data => this.playerTeamsSubject.next(data)));
-  }
-
-
-  getListPlayerTeamScroll(idTeam: number) {
-
-    this.pageSearchPlayer++;
-
-    const params = new HttpParams()
-      .set("IdEquipo", idTeam)
-      .set("page", `${this.pageSearchPlayer}`);
-
-    return this.http.get<ListPlayer[]>(`/api/Usuario`, { params }).
-      pipe(
-        take(1),
-        withLatestFrom(this.playerTeams$),
-        tap(([apiResponse, playerTeams]) => {
-
-          if (apiResponse.length === 0) {
-            this.playerTeamsSubject.next([...playerTeams]);
-          }
-
-          const data = [...playerTeams, ...apiResponse];
-          this.playerTeamsSubject.next(data);
-
-        }));
-  }
-
-
-  getSearchPlayerTeam(namePlayer: string, idTeam: number):Observable<ListPlayer[]> {
-    const params = new HttpParams()
-      .set("Nombre", namePlayer)
-      .set("IdEquipo", idTeam);
-
-    return this.http.get<ListPlayer[]>(`/api/BuscaJugador`, { params }).pipe(
-      tap((apiResponse) => {
-        this.playerTeamsSubject.next([...apiResponse]);
-      }),
-      catchError((err: HttpErrorResponse) => {
-        this.playerTeamsSubject.next(null);
-        return throwError(err);
-      })
-    );
-  }
-
-
   getActiveInvitationSwitch(idTeam: number, IdAceptaI: number) {
 
     const params = new HttpParams()
@@ -269,14 +208,6 @@ export class EquipoService {
     return this.http.post(`/api/activainvitacion`, params);
   }
 
-  getSendInvitationPlayer(IdUsuario: number, IdEquipo: number) {
-
-    const params = new HttpParams()
-      .set("IdUsuario", IdUsuario)
-      .set("IdEquipo", IdEquipo);
-
-    return this.http.post(`/api/invitacionusuario`, params);
-  }
 
   getOutTeam(IdUsuario: number, IdEquipo: number) {
     const params = new HttpParams()
@@ -284,5 +215,22 @@ export class EquipoService {
       .set("IdEquipo", `${IdEquipo}`);
 
     return this.http.delete(`/api/Equipo`, { params });
+  }
+
+  getDeleteMemberTeam(IdEquipo: number, IdUsuario: number) {
+    const params = new HttpParams()
+      .set("IdEquipo", `${IdEquipo}`)
+      .set("IdUsuario", `${IdUsuario}`);
+
+    return this.http.delete(`/api/eliminausequipo`, { params });
+  }
+
+  getUpdateRoleMemberTeam(IdEquipo: number, IdUsuario: number) {
+    const params = new HttpParams()
+      .set("IdEquipo", `${IdEquipo}`)
+      .set("IdUsuario", `${IdUsuario}`)
+      .set("IdRolJugador", 1);
+
+    return this.http.put(`/api/RolJugador`,  params );
   }
 }

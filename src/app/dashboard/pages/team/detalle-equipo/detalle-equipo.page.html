@@ -1,0 +1,167 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar mode="md">
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="closePresentModalSimple()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="style-fullheight style-fullheightRow">
+    <ion-card mode="md">
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ng-container *ngIf="detailsTeam$ | async as detailTeams; else loadingOrError">
+              <ng-container *ngFor="let detailTeam of detailTeams">
+                <ion-col size="12" class="style-col-item">
+                  <ion-item lines="none" class="ion-no-padding">
+                    <ion-avatar slot="start">
+                      <ion-img [src]="detailTeam.ImagenEquipo"></ion-img>
+                    </ion-avatar>
+                    <ion-label>
+                      <h3>{{detailTeam.NombreEquipo}}</h3>
+                    </ion-label>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12" class="ion-text-center">
+                  <div class="style-col-div-first">
+                    <p>{{detailTeam.Descripcion}}</p>
+                  </div>
+                </ion-col>
+                <ion-col size="6" class="ion-text-center" class="style-col-div-middle">
+                  <ion-item lines="none">
+                    <p slot="start">MIEMBROS</p>
+                    <span slot="end">{{detailTeam.NumeroMiembros}}</span>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6" class="ion-text-center" class="style-col-div-middle">
+                  <ion-item lines="none">
+                    <p slot="start">GÉNERO</p>
+                    <span slot="end">{{detailTeam.GeneroEquipo |uppercase}}</span>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12" class="ion-no-padding style-col-div-card">
+                  <ion-card mode="md">
+                    <ion-card-header class="ion-text-center">
+                      <ion-card-title>DEPORTES QUE PRACTICA</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content class="ion-text-center">
+                      <div>
+                        <div *ngFor="let dt of detailTeam.DeportesFavoritos; let i=index" style="display: inline-flex;">
+                          <p *ngIf="i<=4">
+                            {{ dt.NombreDeporte}} <span>|</span>
+                          </p>
+                          <p *ngIf="i>=5 && moreDeportsFavorites">
+                            {{ dt.NombreDeporte}} <span>|</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="ion-text-center">
+                        <span (click)="onMoreDeportsFavorites()"
+                          *ngIf="!moreDeportsFavorites && detailTeam.DeportesFavoritos.length >=5">Ver más</span>
+                      </div>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+                <ion-col size="12">
+                  <div class="style-row-align" *ngIf="detailTeam.AceptaInvitacion == 'Acepta Miembros'">
+                    <ion-button expand="full" shape="round" mode="md" (click)="onSendInvitationTeam()">QUIERO
+                      UNIRME
+                    </ion-button>
+                  </div>
+                  <div class="style-col-div-content" *ngIf="detailTeam.AceptaInvitacion !== 'Acepta Miembros'">
+                    <p>Este equipo no recibe solicitudes para unirse.</p>
+                  </div>
+                </ion-col>
+              </ng-container>
+            </ng-container>
+            <ng-template #loadingOrError>
+              <div class="style-errorHandle" *ngIf="errorHandle$ | async; else loading">
+                <h6>Error al visualizar el <strong>detalle del equipo.</strong></h6>
+                <h6>Por favor,<strong> inténtelo de nuevo</strong> más tarde.</h6>
+              </div>
+              <ng-template #loading>
+                <ion-col size="12" class="style-col-item">
+                  <ion-item lines="none" class="ion-no-padding">
+                    <ion-avatar slot="start">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-avatar>
+                    <ion-label>
+                      <h3>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </h3>
+                      <p>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </p>
+                    </ion-label>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12" class="ion-text-center">
+                  <div class="style-col-div-first">
+                    <p>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </p>
+                  </div>
+                </ion-col>
+                <ion-col size="6" class="ion-text-center" class="style-col-div-middle">
+                  <ion-item lines="none" class="skeleton-text">
+                    <p slot="start">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </p>
+                    <span slot="end">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </span>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6" class="ion-text-center" class="style-col-div-middle">
+                  <ion-item lines="none" class="skeleton-text">
+                    <p slot="start">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </p>
+                    <span slot="end">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </span>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12" class="ion-no-padding style-col-div-card">
+                  <ion-card mode="md">
+                    <ion-card-header class="ion-text-center skeleton-text">
+                      <ion-card-title>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content class="ion-text-center">
+                      <p>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </p>
+                      <p>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </p>
+                      <p>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </p>
+                      <span>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </span>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+                <ion-col size="12">
+                  <div class="style-row-align">
+                    <ion-button expand="full" shape="round" mode="md">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-button>
+                  </div>
+                </ion-col>
+              </ng-template>
+            </ng-template>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

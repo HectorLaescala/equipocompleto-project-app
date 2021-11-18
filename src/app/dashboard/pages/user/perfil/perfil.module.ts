@@ -9,8 +9,7 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { PerfilPageRoutingModule } from './perfil-routing.module';
 
 import { PerfilPage } from './perfil.page';
-import { CarouselTeamsComponent } from '../../team/components/perfil/carousel-teams/carousel-teams.component';
-import { CarouselInvitationComponent } from '../../team/components/perfil/carousel-invitation/carousel-invitation.component';
+import { UsersModule } from '../components/users.module';
 
 @NgModule({
   imports: [
@@ -19,8 +18,9 @@ import { CarouselInvitationComponent } from '../../team/components/perfil/carous
     IonicModule,
     ComponentsModule,
     NgxIonicImageViewerModule,
-    PerfilPageRoutingModule
+    PerfilPageRoutingModule,
+    UsersModule
   ],
-  declarations: [PerfilPage, CarouselTeamsComponent, CarouselInvitationComponent]
+  declarations: [PerfilPage]
 })
 export class PerfilPageModule {}

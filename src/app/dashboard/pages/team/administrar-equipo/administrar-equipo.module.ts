@@ -9,10 +9,10 @@ import { NgxIonicImageViewerModule } from 'ngx-ionic-image-viewer';
 import { AdministrarEquipoPageRoutingModule } from './administrar-equipo-routing.module';
 
 import { AdministrarEquipoPage } from './administrar-equipo.page';
-import { ListDeportsFavoritesComponent } from '../components/administrar-equipo/list-deports-favorites/list-deports-favorites.component';
 import { ModalWithOptionsPageModule } from '../../../../shared/pages/modals/modal-with-options/modal-with-options.module';
 import { ModalOptionAceptedPageModule } from '../../../../shared/pages/modals/modal-option-acepted/modal-option-acepted.module';
-import { ListMembersTeamComponent } from '../components/administrar-equipo/list-members-team/list-members-team.component';
+import { TeamsModule } from '../components/teams.module';
+import { AdministrarTipoRolePage } from '../administrar-tipo-role/administrar-tipo-role.page';
 
 @NgModule({
   imports: [
@@ -24,8 +24,12 @@ import { ListMembersTeamComponent } from '../components/administrar-equipo/list-
     AdministrarEquipoPageRoutingModule,
     ModalWithOptionsPageModule,
     ModalOptionAceptedPageModule,
-    NgxIonicImageViewerModule
+    NgxIonicImageViewerModule,
+    TeamsModule
   ],
-  declarations: [AdministrarEquipoPage, ListDeportsFavoritesComponent, ListMembersTeamComponent]
+  declarations: [AdministrarEquipoPage, AdministrarTipoRolePage],
+  entryComponents: [
+    AdministrarTipoRolePage
+  ]
 })
 export class AdministrarEquipoPageModule {}

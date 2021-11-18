@@ -7,8 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MisEquiposPageRoutingModule } from './mis-equipos-routing.module';
 
 import { MisEquiposPage } from './mis-equipos.page';
-import { ListTeamAdministratorComponent } from '../components/mis-equipos/list-team-administrator/list-team-administrator.component';
-import { ListTeamMembersComponent } from '../components/mis-equipos/list-team-members/list-team-members.component';
+import { TeamsModule } from '../components/teams.module';
 
 @NgModule({
   imports: [
@@ -16,8 +15,9 @@ import { ListTeamMembersComponent } from '../components/mis-equipos/list-team-me
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
-    MisEquiposPageRoutingModule
+    MisEquiposPageRoutingModule,
+    TeamsModule
   ],
-  declarations: [MisEquiposPage, ListTeamAdministratorComponent, ListTeamMembersComponent]
+  declarations: [MisEquiposPage]
 })
 export class MisEquiposPageModule {}

@@ -1,0 +1,44 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar mode="md">
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="closeModalManageTeam()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="style-fullheight style-fullheightRow">
+    <ion-card mode="md">
+      <ion-card-content class="ion-no-padding">
+        <ng-container *ngIf="listMembers && typeRole; ">
+          <ion-grid class="ion-no-padding">
+            <ion-row>
+              <ion-col size="12">
+                <ion-item lines="none" class="ion-no-padding" mode="md">
+                  <ion-avatar slot="start">
+                    <ion-img [src]="listMembers.ImagenUsuario"></ion-img>
+                  </ion-avatar>
+                  <ion-label>
+                    <p>JUGADOR</p>
+                    <h3>{{ listMembers.NombreUsuario}}</h3>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12" class="style-col-button-cancel">
+                <ion-button size="large" expand="full" mode="md" (click)="onUpdateRoleMemberTeam(listMembers.IdEquipo,listMembers.IdUsuario)">HACER ADMINISTRADOR</ion-button>
+              </ion-col>
+              <ion-col size="12" class="style-col-button-cancel" *ngIf="typeRole !== 2">
+                <ion-button size="large" expand="full" mode="md">QUITAR ADMINISTRACIÓN</ion-button>
+              </ion-col>
+              <ion-col size="12" class="style-col-button-delete" (click)="onDeleteMemberTeam(listMembers.IdEquipo,listMembers.IdUsuario)">
+                <ion-button size="large" expand="full" mode="md">ELIMINAR DEL EQUIPO</ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ng-container>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

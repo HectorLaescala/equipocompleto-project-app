@@ -73,7 +73,7 @@ export class ModalsService {
     await modal.present();
 
     await modal.onDidDismiss().then(() => {
-      this.route.navigate([`${routerLink}`])
+      this.route.navigate([`${routerLink}`], { replaceUrl: true })
     });
   }
 }

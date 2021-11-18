@@ -17,12 +17,16 @@ const routes: Routes = [
         loadChildren: () => import('./pages/team/crear-equipo/crear-equipo.module').then(m => m.CrearEquipoPageModule)
       },
       {
-        path: 'team/invite-players/:id',
+        path: 'team/invite-players',
         loadChildren: () => import('./pages/team/invitar-jugadores/invitar-jugadores.module').then(m => m.InvitarJugadoresPageModule)
       },
       {
         path: 'team/profile-team',
         loadChildren: () => import('./pages/team/administrar-equipo/administrar-equipo.module').then(m => m.AdministrarEquipoPageModule)
+      },
+      {
+        path: 'team/detail-team',
+        loadChildren: () => import('./pages/team/perfil-equipo/perfil-equipo.module').then(m => m.PerfilEquipoPageModule)
       },
       {
         path: 'team/user-team',
@@ -36,7 +40,6 @@ const routes: Routes = [
         path: 'profile-user',
         loadChildren: () => import('./pages/user/perfil-usuario/perfil-usuario.module').then(m => m.PerfilUsuarioPageModule)
       },
-
       {
         path: '**',
         redirectTo: 'profile',

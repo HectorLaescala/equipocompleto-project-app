@@ -10,14 +10,14 @@ export class ListTeamMembersComponent implements OnInit {
 
   @Input() teamUsers: TeamUsers[] = [];
   @Input() errorHandle: any | null = null;
-  @Output() showGetModalManageTeam = new EventEmitter<{ IdEquipo: number, CantidadMiembros: number }>();
+  @Output() showGetModalManageTeam = new EventEmitter<{ IdEquipo: number, typeInvitation: string}>();
 
   constructor() { }
 
   ngOnInit() { }
 
-  getModalManageTeam(IdEquipo: number, CantidadMiembros: number) {
-    this.showGetModalManageTeam.emit({ IdEquipo, CantidadMiembros });
+  getModalManageTeam(IdEquipo: number, typeInvitation: string) {
+    this.showGetModalManageTeam.emit({ IdEquipo, typeInvitation });
   }
 
 }

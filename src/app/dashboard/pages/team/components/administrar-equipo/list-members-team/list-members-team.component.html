@@ -10,10 +10,10 @@
         <ion-img [src]="lb.ImagenUsuario"></ion-img>
       </ion-avatar>
       <ion-label>
-        <span>{{ lb.StatusInvitacion }}</span>
+        <span>{{ lb.RolJugadorEquipo }}</span>
         <p>{{ lb.NombreUsuario | titlecase }}</p>
       </ion-label>
-      <ion-button slot="end" expand="block" fill="outline">
+      <ion-button (click)="getSelectRole(lb.IdRolJugadorEquipo, lb)" slot="end" expand="block" fill="outline" *ngIf="validated">
         <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
       </ion-button>
     </ion-item>

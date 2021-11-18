@@ -1,0 +1,230 @@
+ion-content,
+ion-toolbar {
+  --background: transparent;
+}
+
+ion-button {
+  color: #f9f9f9;
+}
+
+.style-col-div-content {
+  border: 1px solid #f88a93; background-color:rgb(248, 138, 147, 0.2);
+  border-radius: 5px;
+  padding: 8px 20px 8px 20px;
+  margin: 0px 0px 5px 0px;
+  font-weight: bold;
+  text-align: center;
+
+  p {
+    color: #333333;
+    font-size: 10px;
+    letter-spacing: 0;
+    font-family: Montserrat-Regular;
+  }
+}
+
+.style-errorHandle {
+  padding-top: 0.5rem;
+  padding-bottom: 0.6rem;
+  h6,
+  p,
+  strong {
+    text-align: center;
+    font-family: Montserrat-Regular;
+  }
+
+  h6,
+  p {
+    font-size: 0.9rem;
+    margin-top: 0rem;
+    margin-bottom: 0.3rem;
+  }
+
+  p {
+    color: #333333;
+  }
+
+  strong {
+    color: #c90949;
+    font-weight: 100;
+  }
+}
+
+ion-content {
+  ion-label {
+    margin-top: 5px;
+  }
+
+  ion-card {
+    border-radius: 10px;
+    box-shadow: none;
+    margin-left: 20px;
+    margin-right: 20px;
+
+    ion-card-content {
+      padding-bottom: 3px;
+    }
+  }
+
+  .style-col-item {
+    ion-avatar {
+      margin-top: 0px;
+      width: 49px;
+      border: 1px solid #ebebeb;
+      border-radius: 5px;
+      height: 49px;
+      padding: 7px;
+    }
+
+    p {
+      font-family: Montserrat-Regular;
+      color: #3c8af4;
+      font-size: 10px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      color: #333333;
+      font-family: Montserrat-SemiBold;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0;
+      line-height: 12px;
+    }
+  }
+
+  .style-col-div-first {
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    background-color: #ffffff;
+    padding: 7px 10px 7px 10px;
+    margin-top: 5px;
+
+    p {
+      color: #333333;
+      font-size: 10px;
+      letter-spacing: 0;
+      line-height: 13px;
+      font-family: Montserrat-Regular;
+    }
+  }
+
+  .style-col-div-middle {
+    ion-item {
+      --background: rgba(206, 225, 252, 0.3);
+      --border-color: rgba(206, 225, 252);
+      --border-width: 1px;
+      --border-radius: 5px;
+      --min-height: 32px;
+      --padding-start: 8px;
+    }
+
+    ion-item > p {
+      color: #707070;
+      font-family: Montserrat-Regular;
+      font-size: 10px;
+      letter-spacing: 0;
+      line-height: 13px;
+      margin-top: 2.9px;
+    }
+
+    ion-item > span {
+      color: #333333;
+      font-family: Montserrat-Regular;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0;
+      line-height: 16px;
+      margin-left: 12px;
+    }
+  }
+
+  .skeleton-text {
+    width: 100%;
+    p {
+      width: 50%;
+    }
+    span {
+      width: 50%;
+    }
+
+    ion-card-title {
+      padding: 0px 10px !important;
+    }
+  }
+
+  .style-fullheight {
+    height: 100%;
+  }
+
+  .style-fullheightRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .style-col-div-card {
+    ion-card {
+      border: 1px solid #ebebeb;
+      border-radius: 5px;
+      margin: 6px 5px 8px 5px;
+    }
+
+    ion-card-header {
+      border-bottom: 1px solid #ebebeb;
+      padding: 6px 0px;
+    }
+
+    ion-card-content {
+      padding: 12px 7px 12px 7px;
+
+      p {
+        color: #333333;
+        font-family: Montserrat-Medium;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 10px;
+
+        span{
+          color: #c90949 !important;
+          padding-left: 0.3rem;
+          padding-right: 0.3rem;
+        }
+      }
+
+      span {
+        color: #3c8af4;
+        font-family: Montserrat-Regular;
+        text-decoration: underline;
+        font-size: 10px;
+        letter-spacing: 0;
+        line-height: 13px;
+      }
+    }
+
+    ion-card-title {
+      color: #707070;
+      font-family: Montserrat-Regular;
+      font-size: 10px;
+      letter-spacing: 0;
+      line-height: 13px;
+    }
+  }
+
+  .style-row-align {
+    display: flex;
+    justify-content: flex-end;
+
+    ion-button {
+      height: 32px;
+      width: 144px;
+      --background: #c90949;
+      --box-shadow: none;
+      font-size: 10px;
+      letter-spacing: 0.3px;
+      font-family: Montserrat-Regular;
+      --color: #ffffff;
+    }
+  }
+}

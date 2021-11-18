@@ -1,0 +1,109 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button (click)="navigateBackToPage()" icon="chevron-back-outline" mode="md" routerDirection="back">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title mode="ios">Perfil del equipo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="detailTeams$ | async as detailTeams; else loadingOrError">
+    <ng-container *ngFor="let detailTeam of detailTeams">
+      <div id="header">
+        <ion-card color="light">
+          <ion-avatar>
+            <ion-img ionImgViewer scheme="dark" [src]="detailTeam.ImagenEquipo"></ion-img>
+          </ion-avatar>
+        </ion-card>
+        <p>{{detailTeam.NombreEquipo}}</p>
+        <span>{{detailTeam.NumeroMiembros}} {{ detailTeam.NumeroMiembros> 1 ? " Miembros" : " Miembro" }}</span>
+      </div>
+
+      <div class="segment">
+        <ion-segment [(ngModel)]="type" mode="md">
+          <ion-segment-button value="members">
+            <ion-label class="ion-text-start">MIEMBROS</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="data">
+            <ion-label class="ion-text-start">DATOS</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+      <div [ngSwitch]="type">
+        <ion-grid fixed>
+          <ion-row *ngSwitchCase="'members'">
+            <ion-col size="12">
+              <app-list-members-team [listMembers]="listMembers" [validated]="validated"></app-list-members-team>
+            </ion-col>
+            <ion-col size="12">
+              <ion-button *ngIf="typeInvitation == 'leave'" class="outline-button" fill="outline" expand="block" mode="md">
+                Abandonar equipo
+              </ion-button>
+              <ion-button *ngIf="typeInvitation == 'receive'" class="outline-button" (click)="onConfirmInvitationUser()"
+                shape="round" color="danger" expand="block" mode="md">
+                Aceptar invitación
+              </ion-button>
+              <ion-button *ngIf="typeInvitation !== 'leave'" class="outline-button" (click)="onCancelInvitationUser(detailTeam.NombreEquipo)"
+                fill="outline" expand="block" mode="md">
+                {{(typeInvitation !== 'send')? 'Rechazar invitación': 'Cancelar solicitud'}}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngSwitchCase="'data'" class="item ion-padding">
+            <ion-col size="12">
+              <ion-label class="item-title">DATOS DEL EQUIPO </ion-label>
+            </ion-col>
+            <ion-col size="12">
+              <ion-list>
+                <ion-item lines="inset">
+                  <ion-label class="item-label">Nombre</ion-label>
+                  <ion-text class="item-text">{{detailTeam.NombreEquipo}}</ion-text>
+                </ion-item>
+                <ion-item lines="inset">
+                  <ion-label class="item-label">Tipo de equipo</ion-label>
+                  <ion-text class="item-text">{{detailTeam.TipoEquipo}}</ion-text>
+                </ion-item>
+                <ion-item lines="inset">
+                  <ion-label class="item-label">Edad promedio</ion-label>
+                  <ion-text class="item-text">{{detailTeam.EdadPromedio}}</ion-text>
+                </ion-item>
+                <ion-item lines="inset">
+                  <ion-label class="item-label">Género del equipo</ion-label>
+                  <ion-text class="item-text">{{detailTeam.GeneroEquipo}}</ion-text>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+            <ion-col size="12">
+              <ion-label class="item-title">DESCRIPCION </ion-label>
+              <ion-textarea rows="3" disabled readonly>
+                {{detailTeam.Descripcion}}
+              </ion-textarea>
+            </ion-col>
+            <ion-col size="12">
+              <ion-label class="item-title">DEPORTES QUE PRACTICA</ion-label>
+              <div class="item-deports">
+                <ion-item lines="none" mode="md" *ngFor="let df of detailTeam.DeportesFavoritos">
+                  <ion-avatar slot="start">
+                  </ion-avatar>
+                  <ion-label> {{ df.NombreDeporte}} </ion-label>
+                </ion-item>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-template #loadingOrError>
+    <div class="errorHandle ion-margin-top" *ngIf="errorHandle$ | async; else loading">
+      <h6>Error al cargar el <strong>perfil del equipo.</strong></h6>
+      <h6>Por favor,<strong> Inténtalo de nuevo</strong> más tarde.</h6>
+    </div>
+    <ng-template #loading>
+      <app-skeleton-detalle-equipo></app-skeleton-detalle-equipo>
+    </ng-template>
+  </ng-template>
+</ion-content>

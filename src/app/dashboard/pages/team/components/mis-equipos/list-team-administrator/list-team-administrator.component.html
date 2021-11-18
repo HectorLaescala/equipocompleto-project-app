@@ -4,7 +4,7 @@
     <ion-badge>{{ teamUsers.length }}</ion-badge>
   </ion-col>
   <ng-container *ngIf="teamUsers.length; else empty">
-    <ion-item (click)="getModalManageTeam(teamUser.IdEquipo, teamUser.CantidadMiembros, '/dashboard/profile', teamUser.Nombre)" lines="none"
+    <ion-item (click)="getModalManageTeam(teamUser.IdEquipo, teamUser.NumeroMiembros, '/dashboard/profile', teamUser.Nombre)" lines="none"
       class="ion-no-padding" mode="md" *ngFor="let teamUser of teamUsers">
       <ion-avatar slot="start">
         <ion-img [src]="teamUser.ImagenEquipo"></ion-img>
@@ -12,8 +12,8 @@
       <ion-label>
         <p>{{ teamUser.Nombre }}</p>
         <h3>
-          {{ teamUser.CantidadMiembros }}
-          {{ teamUser.CantidadMiembros > 1 ? " MIEMBROS" : " MIEMBRO" }}
+          {{ teamUser.NumeroMiembros }}
+          {{ teamUser.NumeroMiembros > 1 ? " MIEMBROS" : " MIEMBRO" }}
         </h3>
       </ion-label>
     </ion-item>

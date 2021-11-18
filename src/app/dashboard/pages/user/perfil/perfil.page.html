@@ -23,7 +23,7 @@
           <ion-label class="ion-text-start">Crear equipo</ion-label>
           <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         </ion-item>
-        <ion-item class="ion-no-padding" routerLink="/partido/agenda-partido" mode="md">
+        <ion-item class="ion-no-padding" routerLink="/partido/agenda-partido" routerDirection="root" mode="md">
           <ion-label class="ion-text-start">Agenda de Partidos</ion-label>
           <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         </ion-item>
@@ -43,15 +43,17 @@
     <ion-row>
       <ion-col size="12" class="text-slide">
         <ion-item>
-          <ion-label class="ion-text-start">TUS EQUIPOS</ion-label>
-          <ion-label class="ion-text-end" routerLink="/dashboard/team/user-team">VER TODOS
+          <ion-label class="ion-text-start">EQUIPOS QUE PERTENECES</ion-label>
+          <ion-label class="ion-text-end" routerLink="/dashboard/team/user-team" routerDirection="root">VER TODOS
           </ion-label>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row class="ion-no-padding ion-margin-start ion-align-items-baseline">
       <ion-col size="12">
-        <app-carousel-teams [teamUsers]="teamUsers$| async" [errorHandle]="errorHandle$" (showGetModalManageTeam)="getModalManageTeam($event.IdEquipo,$event.CantidadMiembros,$event.routerLink,$event.nameTeam)"></app-carousel-teams>
+        <app-carousel-teams [teamUsers]="teamUsers$| async" [errorHandle]="errorHandle$"
+          (showGetModalManageTeam)="getModalManageTeam($event.IdEquipo,$event.CantidadMiembros,$event.routerLink,$event.nameTeam,$event.typeRole)">
+        </app-carousel-teams>
       </ion-col>
     </ion-row>
     <ion-row class="ion-no-padding ion-margin-start ion-align-items-baseline">
@@ -59,7 +61,10 @@
         <p>INVITACIONES DE EQUIPOS</p>
       </ion-col>
       <ion-col size="12" class="card-slide ion-no-padding">
-        <app-carousel-invitation (slideTouchCarousel)="getCarouselInvitationPlayersScroll($event)" [invitationPlayers]="carouselInvitationPlayers$| async" [errorHandle]=" errorHandle$"></app-carousel-invitation>
+        <app-carousel-invitation (slideTouchCarousel)="getCarouselInvitationPlayersScroll($event)"
+          (showPageInvitation)="showPageInvitation($event.IdEquipo,$event.typeInvitation,$event.idInvitation)"
+          [invitationPlayers]="carouselInvitationPlayers$| async" [errorHandle]=" errorHandle$"
+          [errorHandleScroll]=" errorHandleScroll$" [carouselLoading]="carouselLoading$"></app-carousel-invitation>
       </ion-col>
     </ion-row>
     <ion-row class="ion-no-padding ion-margin-start ion-align-items-baseline">
@@ -67,7 +72,11 @@
         <p>SOLICITUDES ENVIADAS</p>
       </ion-col>
       <ion-col size="12" class="card-slide ion-no-padding">
-        <!--<app-carousel-invitation></app-carousel-invitation>-->
+        <app-carousel-invitation-send (slideTouchCarousel)="getCarouselInvitationTeamsScroll($event)"
+          (showPageInvitation)="showPageInvitation($event.IdEquipo,$event.typeInvitation,$event.idInvitation)"
+          [invitationTeams]="carouselInvitationTeams$| async" [errorHandle]=" errorHandleTeams$"
+          [errorHandleScroll]=" errorHandleTeamsScroll$" [carouselLoading]="carouselLoadingTeams$">
+        </app-carousel-invitation-send>
       </ion-col>
     </ion-row>
   </ion-grid>

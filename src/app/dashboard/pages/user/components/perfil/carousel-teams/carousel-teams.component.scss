@@ -6,11 +6,12 @@
   }
 
   ion-card {
-    height: 168px;
+    height: auto;
     width: 152px;
     border-radius: 10px;
     box-shadow: 0 5px 22px 4px rgba(51, 51, 51, 0.05),
       0 7px 8px -4px rgba(51, 51, 51, 0.1);
+      align-items: stretch;
   }
 
   ion-card-content {
@@ -31,24 +32,35 @@
   ion-item {
     --inner-padding-start: 12.5px;
     --inner-padding-bottom: 5px;
-    --inner-padding-top: 15px;
   }
 
-  p:first-of-type {
-    color: #333333;
-    font-family: Montserrat-SemiBold;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0;
-    line-height: 10px;
-  }
+  .swiper-pagination-text-teams {
+    span {
+      color: #c90949;
+      font-family: "Montserrat-SemiBold";
+      font-size: 7px;
+      letter-spacing: 0;
+      line-height: 13px;
+      text-align: center;
+      margin-left: 5px;
+    }
 
-  p:last-of-type {
-    color: #b9b8b9;
-    font-family: Montserrat-Regular;
-    font-size: 10px;
-    letter-spacing: 0;
-    line-height: 13px;
+    p:first-of-type {
+      color: #333333;
+      font-family: Montserrat-SemiBold;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0;
+      line-height: 15px;
+    }
+
+    p:last-of-type {
+      color: #b9b8b9;
+      font-family: Montserrat-Regular;
+      font-size: 10px;
+      letter-spacing: 0;
+      line-height: 13px;
+    }
   }
 }
 

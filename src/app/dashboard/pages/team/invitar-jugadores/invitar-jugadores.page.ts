@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
 import { IonSearchbar } from '@ionic/angular';
-import { EquipoService } from '../../../services/equipo.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ModalsService } from '../../../../services/modals.service';
 import { AlertsService } from '../../../../services/alerts.service';
 import { Subject, throwError } from 'rxjs';
 import { map, tap, filter, distinctUntilChanged, takeUntil, switchMap, catchError } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { InvitationService } from '../../../services/invitation.service';
 
 @Component({
   selector: 'app-invitar-jugadores',
@@ -14,66 +14,117 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./invitar-jugadores.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InvitarJugadoresPage implements OnDestroy {
+export class InvitarJugadoresPage implements OnInit, OnDestroy {
   idTeam: number = 0;
   @ViewChild(IonSearchbar, { static: true }) searchbar: IonSearchbar;
   private destroy$ = new Subject<unknown>();
   errorHandle$ = new Subject<boolean>();
-  playerTeams$ = this.equipoService.playerTeams$;
+  playerTeams$ = this.invitationService.playerTeams$;
   searchFormControl = new FormControl('');
   searching: boolean = false;
   searchLength: boolean = false;
   errorHandleScroll$ = new Subject<boolean>();
+  errorHandleSearch$ = new Subject<boolean>();
+  statusHandleSearch: boolean = false;
+  dataParams: object;
   constructor(
-    private equipoService: EquipoService,
-    private activatedRoute: ActivatedRoute,
+    private invitationService: InvitationService,
     private modals: ModalsService,
-    private alertsService: AlertsService
+    private alertsService: AlertsService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.onSearch();
+    this.route.queryParams.subscribe(() => {
+      if (router.getCurrentNavigation().extras.state) {
+        this.dataParams = this.router.getCurrentNavigation().extras.state.params;
+        this.idTeam = this.dataParams['id'];
+      }
+    })
   }
 
   ngOnDestroy(): void {
+    this.invitationService.playerTeamsSubject.next(null);
+    this.errorHandle$.next(null);
+    this.errorHandleScroll$.next(null);
+    this.errorHandleSearch$.next(null);
     this.destroy$.next({});
     this.destroy$.complete();
   }
 
-  ionViewDidEnter() {
-    this.activatedRoute.params.subscribe(({ id }) => this.idTeam = id);
+
+  ngOnInit(): void {
     this.getPlayers();
     this.searchbar.setFocus();
   }
 
 
   private onSearch(): void {
-    //this.searchLength = true;
+
     this.searchFormControl.valueChanges.pipe(
-      map(search => search?.toLowerCase().trim()),
+      map(search => {
+        this.statusHandleSearch = false;
+        this.errorHandleSearch$.next(null);
+        this.errorHandleScroll$.next(null);
+        this.errorHandle$.next(null);
+        return search?.toLowerCase().trim();
+
+      }),
       distinctUntilChanged(),
       filter((search) => {
         if (search !== '' && search?.length > 2) {
           return true;
+        } else if (search?.length > 0 && search?.length <= 2) {
+          this.statusHandleSearch = true;
+          return false;
         } else if (search === '') {
+          this.searching = true;
+          this.statusHandleSearch = false;
           this.getPlayers();
           return false;
         }
       }),
       tap(() => this.searching = true),
-      switchMap((search) => this.equipoService.getSearchPlayerTeam(search, this.idTeam)),
+      switchMap((search) => this.invitationService.getSearchPlayerTeam(search, this.idTeam)),
       tap(() => this.searching = false),
+      tap((players) => {
+        if (players.length === 0) {
+          this.statusHandleSearch = true;
+        }
+      }),
       catchError((err) => {
-       //this.errorHandle$.next(true);
+        this.searching = false;
+        this.statusHandleSearch = false;
+        this.errorHandleSearch$.next(true);
         return throwError(err);
       }),
       takeUntil(this.destroy$)).subscribe();
   }
 
   ionClear() {
+    this.errorHandleSearch$.next(null);
+    this.errorHandleScroll$.next(null);
+    this.errorHandle$.next(null);
   }
 
+  onClose() {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        params: this.dataParams
+      }
+    }
+
+    this.router.navigate(['/dashboard/team/profile-team'], navigationExtras);
+  }
+
+
   getPlayers() {
-    this.equipoService.getListPlayerTeam(this.idTeam).pipe(
+    this.invitationService.getListPlayerTeam(this.idTeam).pipe(
+      tap(() => this.searching = false),
       catchError((err) => {
+        this.searching = false;
+        this.errorHandleSearch$.next(null);
+        this.errorHandleScroll$.next(null);
         this.errorHandle$.next(true);
         return throwError(err);
       })
@@ -81,7 +132,7 @@ export class InvitarJugadoresPage implements OnDestroy {
   }
 
   getPlayersScroll(event?) {
-    this.equipoService.getListPlayerTeamScroll(this.idTeam).pipe(
+    this.invitationService.getListPlayerTeamScroll(this.idTeam).pipe(
       tap(([resp]) => {
 
         event.target.complete();
@@ -99,14 +150,14 @@ export class InvitarJugadoresPage implements OnDestroy {
     ).subscribe();
   }
 
-  async onSendInvitation(IdUsuario: number, option: string | null) {
+  onSendInvitation(IdUsuario: number, option: string | null) {
     if (option === 'Pendiente') {
       return;
     }
 
-    await this.alertsService.present('Cargando...');
+    this.alertsService.present('Cargando...');
 
-    const http$ = await this.equipoService.getSendInvitationPlayer(
+    const http$ = this.invitationService.getSendInvitationPlayer(
       IdUsuario,
       this.idTeam
     );
@@ -118,7 +169,7 @@ export class InvitarJugadoresPage implements OnDestroy {
 
         if (resp == '0') {
 
-          await this.modals.getshowModalOption(
+          this.modals.getshowModalOption(
             'style-icon-success',
             '¡Felicidades!',
             '',
@@ -126,9 +177,8 @@ export class InvitarJugadoresPage implements OnDestroy {
             ''
           );
           this.getPlayers();
-        }
-        if (resp == '1') {
-          await this.modals.getshowModalOption(
+        } else if (resp == '1') {
+          this.modals.getshowModalOption(
             'style-icon-error',
             '¡Error!',
             '',
@@ -136,7 +186,7 @@ export class InvitarJugadoresPage implements OnDestroy {
             ''
           );
         } else if (resp == '2') {
-          await this.modals.getshowModalOption(
+          this.modals.getshowModalOption(
             'style-icon-error',
             '¡Error!',
             '',

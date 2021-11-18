@@ -1,0 +1,51 @@
+<ion-list class="ion-no-padding list" mode="md">
+  <ion-list-header>
+    NUEVOS POSTULANTES</ion-list-header>
+  <ng-container *ngIf="listMembersNewPlayers; else loadingOrError">
+    <ng-container *ngIf="listMembersNewPlayers.length; else empty">
+      <ion-item lines="none" class="ion-no-padding" *ngFor="let listMembersNewPlayer of listMembersNewPlayers">
+        <ion-avatar slot="start">
+          <ion-img [src]="listMembersNewPlayer.ImagenUsuario"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <span>SOLICITA UNIRSE</span>
+          <p>{{listMembersNewPlayer.NombreUsuario}}</p>
+        </ion-label>
+        <ion-button slot="end" expand="block" fill="outline">
+          <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ng-container>
+    <ng-template #empty>
+      <ion-col size="12">
+        <div class="errorHandle">
+          <h6>Actualmente<strong> no tienes invitaciones </strong>de nuevos postulantes</h6>
+        </div>
+      </ion-col>
+    </ng-template>
+  </ng-container>
+  <ng-template #loadingOrError>
+    <div class="errorHandle" *ngIf="errorHandle | async; else loading">
+      <h6>Error al cargar la <strong>lista de nuevos postulantes.</strong></h6>
+      <h6>Por favor,<strong> Inténtalo de nuevo</strong> más tarde.</h6>
+    </div>
+    <ng-template #loading>
+      <div class="skeleton">
+        <ion-item lines="none" mode="md" class="ion-no-padding" *ngFor="let account of [1, 1, 1, 1, 1,1,1,1,1,1]"
+          class="animated flash slow infinite">
+          <ion-avatar slot="start">
+            <ion-skeleton-text class="animated flash slow infinite"></ion-skeleton-text>
+          </ion-avatar>
+          <ion-label>
+            <p>
+              <ion-skeleton-text width="20%"></ion-skeleton-text>
+            </p>
+            <h3>
+              <ion-skeleton-text width="20%"></ion-skeleton-text>
+            </h3>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ng-template>
+  </ng-template>
+</ion-list>
